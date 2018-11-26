@@ -21,6 +21,8 @@ defmodule GolfWeb.ConnCase do
       use Phoenix.ConnTest
       alias GolfWeb.Router.Helpers, as: Routes
 
+      import Golf.Factory
+
       # The default endpoint for testing
       @endpoint GolfWeb.Endpoint
     end

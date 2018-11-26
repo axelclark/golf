@@ -33,8 +33,12 @@ defmodule Golf.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:absinthe, "~> 1.4"},
+      {:absinthe_plug, "~> 1.4"},
+      {:absinthe_phoenix, "~> 1.4"},
       {:distillery, "~> 2.0"},
       {:ecto_sql, "~> 3.0"},
+      {:ex_machina, "~> 2.2", only: :test},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:postgrex, ">= 0.0.0"},

@@ -22,6 +22,8 @@ defmodule Golf.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import Golf.DataCase
+
+      import Golf.Factory
     end
   end
 

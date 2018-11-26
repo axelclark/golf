@@ -20,6 +20,8 @@ defmodule GolfWeb.ChannelCase do
       # Import conveniences for testing with channels
       use Phoenix.ChannelTest
 
+      import Golf.Factory
+
       # The default endpoint for testing
       @endpoint GolfWeb.Endpoint
     end
