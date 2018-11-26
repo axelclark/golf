@@ -10,9 +10,18 @@ use Mix.Config
 # which you should run after static files are built and
 # before starting your production server.
 config :golf, GolfWeb.Endpoint,
-  http: [:inet6, port: System.get_env("PORT") || 4000],
-  url: [host: "example.com", port: 80],
-  cache_static_manifest: "priv/static/cache_manifest.json"
+  http: [port: {:system, "PORT"}],
+  url: [host: "golf.gigalixirapp.com", port: 80],
+  cache_static_manifest: "priv/static/cache_manifest.json",
+  server: true,
+  secret_key_base: "${SECRET_KEY_BASE}"
+
+config :golf, Golf.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  url: "${DATABASE_URL}",
+  database: "",
+  ssl: true,
+  pool_size: 4
 
 # Do not print debug messages in production
 config :logger, level: :info
@@ -68,4 +77,4 @@ config :logger, level: :info
 
 # Finally import the config/prod.secret.exs which should be versioned
 # separately.
-import_config "prod.secret.exs"
+# import_config "prod.secret.exs"
