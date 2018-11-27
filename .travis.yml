@@ -4,11 +4,7 @@ otp_release: 21.0
 sudo: false
 
 addons:
-  postgresql: "10"
-  apt:
-    packages:
-    - postgresql-10
-    - postgresql-client-10
+  postgresql: "9.4"
 
 cache:
   directories:
@@ -17,8 +13,6 @@ cache:
 
 env:
   - MIX_ENV=test
-  global:
-  - PGPORT=5433
 
 script:
   - mix ecto.create
