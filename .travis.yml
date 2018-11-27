@@ -15,5 +15,10 @@ env:
   - MIX_ENV=test
 
 script:
-  - mix ecto.create
   - mix test
+
+deploy:
+  provider: script
+  script: scripts/deploy.sh
+  on:
+    branch: master
