@@ -1,16 +1,22 @@
 defmodule GolfWeb.Schema.Query.CoursesTest do
   use GolfWeb.ConnCase
 
+  require Ecto.Query
+
   setup do
     ExMachina.Sequence.reset()
     courses = insert_list(3, :course)
-    {:ok, courses: courses}
+    holes = insert_list(3, :hole, course: hd(courses))
+    {:ok, courses: courses, holes: holes}
   end
 
   @query """
   {
     courses {
       name
+      holes {
+        hole_number
+      }
     }
   }
   """
@@ -21,9 +27,16 @@ defmodule GolfWeb.Schema.Query.CoursesTest do
     assert json_response(conn, 200) == %{
              "data" => %{
                "courses" => [
-                 %{"name" => "course0"},
-                 %{"name" => "course1"},
-                 %{"name" => "course2"}
+                 %{
+                   "name" => "course0",
+                   "holes" => [
+                     %{"hole_number" => 1},
+                     %{"hole_number" => 2},
+                     %{"hole_number" => 3}
+                   ]
+                 },
+                 %{"name" => "course1", "holes" => []},
+                 %{"name" => "course2", "holes" => []}
                ]
              }
            }
