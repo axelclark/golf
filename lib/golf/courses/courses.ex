@@ -101,4 +101,12 @@ defmodule Golf.Courses do
   def change_course(%Course{} = course) do
     Course.changeset(course, %{})
   end
+
+  def data() do
+    Dataloader.Ecto.new(Repo, query: &query/2)
+  end
+
+  def query(queryable, _params) do
+    queryable
+  end
 end

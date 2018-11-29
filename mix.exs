@@ -36,6 +36,7 @@ defmodule Golf.MixProject do
       {:absinthe, "~> 1.4"},
       {:absinthe_plug, "~> 1.4"},
       {:absinthe_phoenix, "~> 1.4"},
+      {:dataloader, "~> 1.0.4"},
       {:distillery, "~> 2.0"},
       {:ecto_sql, "~> 3.0"},
       {:ex_machina, "~> 2.2", only: :test},
