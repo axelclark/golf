@@ -1,0 +1,26 @@
+<h1>Listing Rounds</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Started on</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for round <- @rounds do %>
+    <tr>
+      <td><%= round.started_on %></td>
+
+      <td>
+        <%= link "Show", to: Routes.round_path(@conn, :show, round) %>
+        <%= link "Edit", to: Routes.round_path(@conn, :edit, round) %>
+        <%= link "Delete", to: Routes.round_path(@conn, :delete, round), method: :delete, data: [confirm: "Are you sure?"] %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Round", to: Routes.round_path(@conn, :new) %></span>

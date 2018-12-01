@@ -1,7 +1,7 @@
 defmodule Golf.Factory do
   use ExMachina.Ecto, repo: Golf.Repo
 
-  alias Golf.Courses
+  alias Golf.{Courses, Scorecard}
 
   def course_factory do
     %Courses.Course{
@@ -14,6 +14,13 @@ defmodule Golf.Factory do
     %Courses.Hole{
       hole_number: sequence(:hole_number, Enum.to_list(1..18)),
       par: sequence(:par, [3, 4])
+    }
+  end
+
+  def round_factory do
+    %Scorecard.Round{
+      started_on: ~D[2018-11-30],
+      course: build(:course)
     }
   end
 end

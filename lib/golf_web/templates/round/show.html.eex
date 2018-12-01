@@ -1,0 +1,13 @@
+<h1>Show Round</h1>
+
+<ul>
+
+  <li>
+    <strong>Started on:</strong>
+    <%= @round.started_on %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.round_path(@conn, :edit, @round) %></span>
+<span><%= link "Back", to: Routes.round_path(@conn, :index) %></span>

@@ -16,6 +16,7 @@
       <td><%= course.num_holes %></td>
 
       <td>
+        <%= link "NewRound", to: Routes.round_path(@conn, :create, %{round: %{course_id: course.id}}), method: :post %>
         <%= link "Show", to: Routes.course_path(@conn, :show, course) %>
         <%= link "Edit", to: Routes.course_path(@conn, :edit, course) %>
         <%= link "Delete", to: Routes.course_path(@conn, :delete, course), method: :delete, data: [confirm: "Are you sure?"] %>
