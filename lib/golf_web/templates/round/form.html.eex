@@ -13,6 +13,32 @@
   <%= select(f, :course_id, Enum.map(@courses, &{&1.name, &1.id})) %>
   <%= error_tag f, :course_id %>
 
+  <table>
+    <thead>
+      <tr>
+        <th>Hole Number</th>
+        <th>Par</th>
+        <th>Strokes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= inputs_for f, :scores, fn score -> %>
+        <tr>
+          <td>
+            <%= score.data.hole.hole_number %>
+          </td>
+          <td>
+            <%= score.data.hole.par %>
+          </td>
+          <td>
+            <%= number_input score, :num_strokes %>
+            <%= error_tag score, :num_strokes %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+    </table>
+
   <div>
     <%= submit "Save" %>
   </div>

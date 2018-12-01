@@ -5,6 +5,7 @@ defmodule Golf.Scorecard.Round do
   schema "rounds" do
     field :started_on, :date
     belongs_to :course, Golf.Courses.Course
+    has_many :scores, Golf.Scorecard.Score
 
     timestamps()
   end
@@ -14,5 +15,6 @@ defmodule Golf.Scorecard.Round do
     round
     |> cast(attrs, [:started_on, :course_id])
     |> validate_required([:started_on, :course_id])
+    |> cast_assoc(:scores)
   end
 end

@@ -13,7 +13,8 @@ defmodule Golf.Factory do
   def hole_factory do
     %Courses.Hole{
       hole_number: sequence(:hole_number, Enum.to_list(1..18)),
-      par: sequence(:par, [3, 4])
+      par: sequence(:par, [3, 4]),
+      course: build(:course)
     }
   end
 
@@ -21,6 +22,14 @@ defmodule Golf.Factory do
     %Scorecard.Round{
       started_on: ~D[2018-11-30],
       course: build(:course)
+    }
+  end
+
+  def score_factory do
+    %Scorecard.Score{
+      num_strokes: nil,
+      round: build(:round),
+      hole: build(:hole)
     }
   end
 end

@@ -17,7 +17,7 @@ defmodule Golf.CoursesTest do
 
     test "get_course!/1 returns the course with given id" do
       course = insert(:course)
-      assert Courses.get_course!(course.id) == course
+      assert Courses.get_course!(course.id).name == course.name
     end
 
     test "create_course/1 with valid data creates a course" do
@@ -40,7 +40,7 @@ defmodule Golf.CoursesTest do
     test "update_course/2 with invalid data returns error changeset" do
       course = insert(:course)
       assert {:error, %Ecto.Changeset{}} = Courses.update_course(course, @invalid_attrs)
-      assert course == Courses.get_course!(course.id)
+      assert course.name == Courses.get_course!(course.id).name
     end
 
     test "delete_course/1 deletes the course" do

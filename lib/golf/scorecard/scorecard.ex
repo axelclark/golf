@@ -6,7 +6,8 @@ defmodule Golf.Scorecard do
   import Ecto.Query, warn: false
   alias Golf.Repo
 
-  alias Golf.Scorecard.Round
+  alias Golf.Scorecard.{Round, Score}
+  alias Golf.Courses
 
   @doc """
   Returns the list of rounds.
@@ -35,7 +36,11 @@ defmodule Golf.Scorecard do
       ** (Ecto.NoResultsError)
 
   """
-  def get_round!(id), do: Repo.get!(Round, id)
+  def get_round!(id) do
+    Round
+    |> preload([:course, [scores: :hole]])
+    |> Repo.get!(id)
+  end
 
   @doc """
   Creates a round.
@@ -55,7 +60,23 @@ defmodule Golf.Scorecard do
     %Round{}
     |> Round.changeset(attrs)
     |> Repo.insert()
+    |> add_scores_from_holes()
   end
+
+  defp add_scores_from_holes({:error, _} = error), do: error
+
+  defp add_scores_from_holes({:ok, round}) do
+    %{course_id: course_id} = round
+    course = Courses.get_course!(course_id)
+
+    Enum.each(course.holes, fn %{id: hole_id} ->
+      Repo.insert(%Score{hole_id: hole_id, round_id: round.id})
+    end)
+
+    {:ok, round}
+  end
+
+  defp add_scores_from_holes(attrs), do: attrs
 
   @doc """
   Updates a round.

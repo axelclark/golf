@@ -35,7 +35,11 @@ defmodule Golf.Courses do
       ** (Ecto.NoResultsError)
 
   """
-  def get_course!(id), do: Repo.get!(Course, id)
+  def get_course!(id) do
+    Course
+    |> preload(:holes)
+    |> Repo.get!(id)
+  end
 
   @doc """
   Creates a course.

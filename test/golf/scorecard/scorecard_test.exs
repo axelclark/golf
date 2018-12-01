@@ -21,11 +21,17 @@ defmodule Golf.ScorecardTest do
       assert Scorecard.get_round!(round.id).id == round.id
     end
 
-    test "create_round/1 with valid data creates a round" do
+    test "create_round/1 with valid data creates a round and scores" do
       course = insert(:course)
+      _hole1 = insert(:hole, course: course)
+      _hole2 = insert(:hole, course: course)
       attrs = Map.put(@valid_attrs, "course_id", course.id)
-      assert {:ok, %Round{} = round} = Scorecard.create_round(attrs)
-      assert round.started_on == ~D[2010-04-17]
+
+      {:ok, %Round{} = result} = Scorecard.create_round(attrs)
+      round = Scorecard.get_round!(result.id)
+
+      assert result.started_on == ~D[2010-04-17]
+      assert Enum.count(round.scores) == 2
     end
 
     test "create_round/1 with no date creates a round" do
@@ -40,9 +46,20 @@ defmodule Golf.ScorecardTest do
     end
 
     test "update_round/2 with valid data updates the round" do
+      course = insert(:course)
+      hole = insert(:hole, course: course)
       round = insert(:round)
-      assert {:ok, %Round{} = round} = Scorecard.update_round(round, @update_attrs)
-      assert round.started_on == ~D[2011-05-18]
+      score = insert(:score, hole: hole, round: round, num_strokes: nil)
+
+      round = %{scores: [score]} = Scorecard.get_round!(round.id)
+      score_attrs = %{"0" => %{"id" => score.id, "num_strokes" => "4"}}
+      attrs = Map.put(@update_attrs, "scores", score_attrs)
+
+      {:ok, %Round{}} = Scorecard.update_round(round, attrs)
+      result = %{scores: [score]} = Scorecard.get_round!(round.id)
+
+      assert result.started_on == ~D[2011-05-18]
+      assert score.num_strokes == 4
     end
 
     test "update_round/2 with invalid data returns error changeset" do

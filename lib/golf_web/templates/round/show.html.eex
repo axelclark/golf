@@ -1,13 +1,34 @@
-<h1>Show Round</h1>
+<h1>
+  <%= @round.course.name %>
+</h1>
 
 <ul>
-
   <li>
     <strong>Started on:</strong>
     <%= @round.started_on %>
   </li>
-
 </ul>
+
+<h2>Scorecard</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Hole Number</th>
+      <th>Par</th>
+      <th>Strokes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= for score <- @round.scores do %>
+      <tr>
+        <td><%= score.hole.hole_number %></td>
+        <td><%= score.hole.par %></td>
+        <td><%= score.num_strokes %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
 
 <span><%= link "Edit", to: Routes.round_path(@conn, :edit, @round) %></span>
 <span><%= link "Back", to: Routes.round_path(@conn, :index) %></span>

@@ -36,9 +36,6 @@ defmodule GolfWeb.RoundControllerTest do
 
       assert %{id: id} = redirected_params(conn)
       assert redirected_to(conn) == Routes.round_path(conn, :show, id)
-
-      conn = get(conn, Routes.round_path(conn, :show, id))
-      assert html_response(conn, 200) =~ "Show Round"
     end
 
     test "creates round with date today when none given", %{conn: conn} do
@@ -48,9 +45,6 @@ defmodule GolfWeb.RoundControllerTest do
 
       assert %{id: id} = redirected_params(conn)
       assert redirected_to(conn) == Routes.round_path(conn, :show, id)
-
-      conn = get(conn, Routes.round_path(conn, :show, id))
-      assert html_response(conn, 200) =~ "Show Round"
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
@@ -59,12 +53,32 @@ defmodule GolfWeb.RoundControllerTest do
     end
   end
 
+  describe "show round" do
+    setup [:create_round]
+
+    test "shows a round with scores", %{conn: conn, round: round} do
+      hole = insert(:hole, course: round.course)
+      score = insert(:score, round: round, hole: hole, num_strokes: 5)
+
+      conn = get(conn, Routes.round_path(conn, :show, round.id))
+
+      assert html_response(conn, 200) =~ "Started on"
+      assert String.contains?(conn.resp_body, round.course.name)
+      assert String.contains?(conn.resp_body, Integer.to_string(score.num_strokes))
+    end
+  end
+
   describe "edit round" do
     setup [:create_round]
 
     test "renders form for editing chosen round", %{conn: conn, round: round} do
+      hole = insert(:hole, course: round.course)
+      insert(:score, round: round, hole: hole, num_strokes: 3)
+
       conn = get(conn, Routes.round_path(conn, :edit, round))
+
       assert html_response(conn, 200) =~ "Edit Round"
+      assert String.contains?(conn.resp_body, "Strokes")
     end
   end
 
