@@ -49,7 +49,7 @@ defmodule Golf.ScorecardTest do
       course = insert(:course)
       hole = insert(:hole, course: course)
       round = insert(:round)
-      score = insert(:score, hole: hole, round: round, num_strokes: nil)
+      insert(:score, hole: hole, round: round, num_strokes: nil)
 
       round = %{scores: [score]} = Scorecard.get_round!(round.id)
       score_attrs = %{"0" => %{"id" => score.id, "num_strokes" => "4"}}
@@ -77,6 +77,27 @@ defmodule Golf.ScorecardTest do
     test "change_round/1 returns a round changeset" do
       round = insert(:round)
       assert %Ecto.Changeset{} = Scorecard.change_round(round)
+    end
+  end
+
+  describe "scores" do
+    alias Golf.Scorecard.Score
+
+    test "create_score/1 with valid data creates a score" do
+      course = insert(:course)
+      round = insert(:round, course: course)
+      hole = insert(:hole, course: course)
+      attrs = %{hole_id: hole.id, round_id: round.id}
+
+      {:ok, %Score{} = result} = Scorecard.create_score(attrs)
+
+      assert result.round_id == round.id
+      assert result.hole_id == hole.id
+      assert result.num_strokes == nil
+    end
+
+    test "create_round/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Scorecard.create_score(%{})
     end
   end
 end

@@ -11,12 +11,6 @@ defmodule Golf.Scorecard do
 
   @doc """
   Returns the list of rounds.
-
-  ## Examples
-
-      iex> list_rounds()
-      [%Round{}, ...]
-
   """
   def list_rounds do
     Repo.all(Round)
@@ -26,15 +20,6 @@ defmodule Golf.Scorecard do
   Gets a single round.
 
   Raises `Ecto.NoResultsError` if the Round does not exist.
-
-  ## Examples
-
-      iex> get_round!(123)
-      %Round{}
-
-      iex> get_round!(456)
-      ** (Ecto.NoResultsError)
-
   """
   def get_round!(id) do
     Round
@@ -44,15 +29,6 @@ defmodule Golf.Scorecard do
 
   @doc """
   Creates a round.
-
-  ## Examples
-
-      iex> create_round(%{field: value})
-      {:ok, %Round{}}
-
-      iex> create_round(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
   """
   def create_round(attrs \\ %{}) do
     attrs = Map.put_new(attrs, "started_on", Date.utc_today())
@@ -70,25 +46,24 @@ defmodule Golf.Scorecard do
     course = Courses.get_course!(course_id)
 
     Enum.each(course.holes, fn %{id: hole_id} ->
-      Repo.insert(%Score{hole_id: hole_id, round_id: round.id})
+      score_attrs = %{hole_id: hole_id, round_id: round.id}
+      create_score(score_attrs)
     end)
 
     {:ok, round}
   end
 
-  defp add_scores_from_holes(attrs), do: attrs
+  @doc """
+  Creates a score.
+  """
+  def create_score(attrs \\ %{}) do
+    %Score{}
+    |> Score.changeset(attrs)
+    |> Repo.insert()
+  end
 
   @doc """
   Updates a round.
-
-  ## Examples
-
-      iex> update_round(round, %{field: new_value})
-      {:ok, %Round{}}
-
-      iex> update_round(round, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
   """
   def update_round(%Round{} = round, attrs) do
     round
@@ -98,15 +73,6 @@ defmodule Golf.Scorecard do
 
   @doc """
   Deletes a Round.
-
-  ## Examples
-
-      iex> delete_round(round)
-      {:ok, %Round{}}
-
-      iex> delete_round(round)
-      {:error, %Ecto.Changeset{}}
-
   """
   def delete_round(%Round{} = round) do
     Repo.delete(round)
@@ -114,12 +80,6 @@ defmodule Golf.Scorecard do
 
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking round changes.
-
-  ## Examples
-
-      iex> change_round(round)
-      %Ecto.Changeset{source: %Round{}}
-
   """
   def change_round(%Round{} = round) do
     Round.changeset(round, %{})
