@@ -15,5 +15,6 @@ defmodule Golf.Courses.Course do
     course
     |> cast(attrs, [:name, :num_holes])
     |> validate_required([:name, :num_holes])
+    |> cast_assoc(:holes)
   end
 end

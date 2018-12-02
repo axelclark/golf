@@ -13,6 +13,31 @@
   <%= number_input f, :num_holes %>
   <%= error_tag f, :num_holes %>
 
+  <%= if f.data.holes !== [] && is_list(f.data.holes) do %>
+    <table>
+      <thead>
+        <tr>
+          <th>Hole Number</th>
+          <th>Par</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= inputs_for f, :holes, fn hole -> %>
+          <tr>
+            <td>
+              <%= number_input hole, :hole_number %>
+              <%= error_tag hole, :hole_number %>
+            </td>
+            <td>
+              <%= number_input hole, :par %>
+              <%= error_tag hole, :par %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+
   <div>
     <%= submit "Save" %>
   </div>

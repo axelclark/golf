@@ -6,9 +6,9 @@ defmodule Golf.CoursesTest do
   describe "courses" do
     alias Golf.Courses.Course
 
-    @valid_course_attrs %{name: "some name", num_holes: 9}
-    @update_course_attrs %{name: "some updated name", num_holes: 18}
-    @invalid_course_attrs %{name: nil, num_holes: nil}
+    @valid_course_attrs %{"name" => "some name", "num_holes" => 9}
+    @update_course_attrs %{"name" => "some updated name", "num_holes" => 18}
+    @invalid_course_attrs %{"name" => nil, "num_holes" => nil}
 
     test "list_courses/0 returns all courses" do
       course = insert(:course)
@@ -35,9 +35,17 @@ defmodule Golf.CoursesTest do
 
     test "update_course/2 with valid data updates the course" do
       course = insert(:course)
-      assert {:ok, %Course{} = course} = Courses.update_course(course, @update_course_attrs)
-      assert course.name == "some updated name"
-      assert course.num_holes == 18
+      hole = insert(:hole, course: course, par: 3)
+      hole_attrs = %{"0" => %{"id" => hole.id, "par" => "4"}}
+      attrs = Map.put(@update_course_attrs, "holes", hole_attrs)
+      course = Courses.get_course!(course.id)
+
+      assert {:ok, %Course{}} = Courses.update_course(course, attrs)
+      result = %{holes: [hole]} = Courses.get_course!(course.id)
+
+      assert result.name == "some updated name"
+      assert result.num_holes == 18
+      assert hole.par == 4
     end
 
     test "update_course/2 with invalid data returns error changeset" do
