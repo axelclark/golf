@@ -4,7 +4,7 @@ defmodule Golf.Courses.Hole do
 
   schema "holes" do
     field :hole_number, :integer
-    field :par, :integer
+    field :par, :integer, default: 3
     belongs_to(:course, Golf.Courses.Course)
 
     timestamps()
@@ -13,7 +13,7 @@ defmodule Golf.Courses.Hole do
   @doc false
   def changeset(hole, attrs) do
     hole
-    |> cast(attrs, [:hole_number, :par])
-    |> validate_required([:hole_number, :par])
+    |> cast(attrs, [:hole_number, :par, :course_id])
+    |> validate_required([:hole_number, :par, :course_id])
   end
 end
