@@ -3,16 +3,16 @@
 <table>
   <thead>
     <tr>
+      <th>Course</th>
       <th>Started on</th>
-
       <th></th>
     </tr>
   </thead>
   <tbody>
 <%= for round <- @rounds do %>
     <tr>
+      <td><%= round.course.name %></td>
       <td><%= round.started_on %></td>
-
       <td>
         <%= link "Show", to: Routes.round_path(@conn, :show, round) %>
         <%= link "Edit", to: Routes.round_path(@conn, :edit, round) %>

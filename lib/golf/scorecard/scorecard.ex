@@ -13,7 +13,9 @@ defmodule Golf.Scorecard do
   Returns the list of rounds.
   """
   def list_rounds do
-    Repo.all(Round)
+    Round
+    |> preload([:course, [scores: :hole]])
+    |> Repo.all()
   end
 
   @doc """

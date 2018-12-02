@@ -14,9 +14,13 @@ defmodule GolfWeb.RoundControllerTest do
 
   describe "index" do
     test "lists all rounds", %{conn: conn} do
-      insert(:round)
+      course = insert(:course)
+      insert(:round, course: course)
+
       conn = get(conn, Routes.round_path(conn, :index))
+
       assert html_response(conn, 200) =~ "Listing Rounds"
+      assert String.contains?(conn.resp_body, course.name)
     end
   end
 

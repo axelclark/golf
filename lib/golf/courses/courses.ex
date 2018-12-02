@@ -12,7 +12,9 @@ defmodule Golf.Courses do
   Returns the list of courses.
   """
   def list_courses do
-    Repo.all(Course)
+    Course
+    |> preload(:holes)
+    |> Repo.all()
   end
 
   @doc """

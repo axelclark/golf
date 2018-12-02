@@ -11,9 +11,13 @@ defmodule Golf.ScorecardTest do
     @invalid_attrs %{"started_on" => nil}
 
     test "list_rounds/0 returns all rounds" do
-      round = insert(:round)
+      course = insert(:course)
+      round = insert(:round, course: course)
+
       [result] = Scorecard.list_rounds()
+
       assert result.id == round.id
+      assert result.course.name == course.name
     end
 
     test "get_round!/1 returns the round with given id" do

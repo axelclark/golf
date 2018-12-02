@@ -12,7 +12,13 @@ defmodule Golf.CoursesTest do
 
     test "list_courses/0 returns all courses" do
       course = insert(:course)
-      assert Courses.list_courses() == [course]
+      hole = insert(:hole, course: course)
+
+      [result] = Courses.list_courses()
+      %{holes: [hole_result]} = result
+
+      assert result.id == course.id
+      assert hole_result.id == hole.id
     end
 
     test "get_course!/1 returns the course with given id" do
