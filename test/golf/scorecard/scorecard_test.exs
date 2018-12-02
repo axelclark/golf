@@ -4,7 +4,7 @@ defmodule Golf.ScorecardTest do
   alias Golf.Scorecard
 
   describe "rounds" do
-    alias Golf.Scorecard.Round
+    alias Golf.Scorecard.{Round, Score}
 
     @valid_attrs %{"started_on" => ~D[2010-04-17]}
     @update_attrs %{"started_on" => ~D[2011-05-18]}
@@ -52,7 +52,7 @@ defmodule Golf.ScorecardTest do
     test "update_round/2 with valid data updates the round" do
       course = insert(:course)
       hole = insert(:hole, course: course)
-      round = insert(:round)
+      round = insert(:round, course: course)
       insert(:score, hole: hole, round: round, num_strokes: nil)
 
       round = %{scores: [score]} = Scorecard.get_round!(round.id)
@@ -73,9 +73,14 @@ defmodule Golf.ScorecardTest do
     end
 
     test "delete_round/1 deletes the round" do
-      round = insert(:round)
+      course = insert(:course)
+      hole = insert(:hole, course: course)
+      round = insert(:round, course: course)
+      score = insert(:score, hole: hole, round: round, num_strokes: nil)
+
       assert {:ok, %Round{}} = Scorecard.delete_round(round)
       assert_raise Ecto.NoResultsError, fn -> Scorecard.get_round!(round.id) end
+      assert_raise Ecto.NoResultsError, fn -> Golf.Repo.get!(Score, score.id) end
     end
 
     test "change_round/1 returns a round changeset" do

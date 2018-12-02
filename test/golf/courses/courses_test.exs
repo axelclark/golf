@@ -4,7 +4,7 @@ defmodule Golf.CoursesTest do
   alias Golf.Courses
 
   describe "courses" do
-    alias Golf.Courses.Course
+    alias Golf.Courses.{Course, Hole}
 
     @valid_course_attrs %{"name" => "some name", "num_holes" => 9}
     @update_course_attrs %{"name" => "some updated name", "num_holes" => 18}
@@ -62,8 +62,11 @@ defmodule Golf.CoursesTest do
 
     test "delete_course/1 deletes the course" do
       course = insert(:course)
+      hole = insert(:hole, course: course)
+
       assert {:ok, %Course{}} = Courses.delete_course(course)
       assert_raise Ecto.NoResultsError, fn -> Courses.get_course!(course.id) end
+      assert_raise Ecto.NoResultsError, fn -> Golf.Repo.get!(Hole, hole.id) end
     end
 
     test "change_course/1 returns a course changeset" do
