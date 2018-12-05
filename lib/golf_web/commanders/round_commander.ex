@@ -1,23 +1,29 @@
 defmodule GolfWeb.RoundCommander do
   use Drab.Commander
 
+  alias Golf.Scorecard
+  alias GolfWeb.RoundView
+
   defhandler increment(socket, sender, %{"id" => score_id}) do
-    {:ok, %{num_strokes: num_strokes}} = Golf.Scorecard.increment_score(score_id)
-    send_data(socket, sender, num_strokes)
+    {:ok, score} = Scorecard.increment_score(score_id)
+    send_score(socket, sender, score.num_strokes)
+    update_round_total_score(socket, score)
   end
 
   defhandler decrement(socket, sender, %{"id" => score_id}) do
-    {:ok, %{num_strokes: num_strokes}} = Golf.Scorecard.decrement_score(score_id)
-    send_data(socket, sender, num_strokes)
+    {:ok, score} = Scorecard.decrement_score(score_id)
+    send_score(socket, sender, score.num_strokes)
+    update_round_total_score(socket, score)
   end
 
-  defp send_data(socket, sender, num_strokes) do
+  defp send_score(socket, sender, num_strokes) do
     set_prop(socket, this_commander(sender) <> " .num_strokes",
-      innerHTML: display_strokes(num_strokes)
+      innerHTML: RoundView.display_strokes(num_strokes)
     )
   end
 
-  defp display_strokes(strokes) when strokes < 1, do: ""
-
-  defp display_strokes(strokes), do: strokes
+  defp update_round_total_score(socket, score) do
+    round = Scorecard.get_round!(score.round_id)
+    set_prop(socket, "#total_score", innerHTML: RoundView.display_score(round.total_score))
+  end
 end

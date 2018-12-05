@@ -66,7 +66,7 @@ defmodule GolfWeb.RoundControllerTest do
 
       conn = get(conn, Routes.round_path(conn, :show, round.id))
 
-      assert html_response(conn, 200) =~ "Started on"
+      assert html_response(conn, 200) =~ "Date"
       assert String.contains?(conn.resp_body, round.course.name)
       assert String.contains?(conn.resp_body, Integer.to_string(score.num_strokes))
     end

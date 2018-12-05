@@ -25,6 +25,20 @@ defmodule Golf.ScorecardTest do
       assert Scorecard.get_round!(round.id).id == round.id
     end
 
+    test "get_round!/1 returns the round with total score" do
+      course = insert(:course)
+      hole1 = insert(:hole, course: course, par: 3)
+      hole2 = insert(:hole, course: course, par: 4)
+      hole3 = insert(:hole, course: course, par: 4)
+
+      round = insert(:round)
+      insert(:score, hole: hole1, round: round, num_strokes: 2)
+      insert(:score, hole: hole2, round: round, num_strokes: 4)
+      insert(:score, hole: hole3, round: round, num_strokes: 0)
+
+      assert Scorecard.get_round!(round.id).total_score == -1
+    end
+
     test "create_round/1 with valid data creates a round and scores" do
       course = insert(:course)
       _hole1 = insert(:hole, course: course)

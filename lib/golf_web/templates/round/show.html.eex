@@ -4,8 +4,14 @@
 
 <ul>
   <li>
-    <strong>Started on:</strong>
+    <strong>Date:</strong>
     <%= @round.started_on %>
+  </li>
+  <li>
+    <strong>Score:</strong>
+    <span id="total_score">
+      <%= display_score(@round.total_score) %>
+    </span>
   </li>
 </ul>
 

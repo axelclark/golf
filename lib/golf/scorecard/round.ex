@@ -4,6 +4,7 @@ defmodule Golf.Scorecard.Round do
 
   schema "rounds" do
     field :started_on, :date
+    field :total_score, :integer, virtual: true, default: 0
     belongs_to :course, Golf.Courses.Course
     has_many :scores, Golf.Scorecard.Score
 
@@ -16,5 +17,16 @@ defmodule Golf.Scorecard.Round do
     |> cast(attrs, [:started_on, :course_id])
     |> validate_required([:started_on, :course_id])
     |> cast_assoc(:scores)
+  end
+
+  def add_total_score(round) do
+    Enum.reduce(round.scores, round, &calc_total_score/2)
+  end
+
+  defp calc_total_score(%{num_strokes: 0}, round), do: round
+
+  defp calc_total_score(score, round) do
+    score = score.num_strokes - score.hole.par
+    Map.update!(round, :total_score, &(&1 + score))
   end
 end
