@@ -22,7 +22,7 @@
     </tr>
   </thead>
   <tbody>
-    <%= for score <- @round.scores do %>
+    <%= for score <- Enum.sort_by(@round.scores, &(&1.hole.hole_number)) do %>
       <%= render "score_rows.html", Map.put(assigns, :score, score) %>
     <% end %>
   </tbody>

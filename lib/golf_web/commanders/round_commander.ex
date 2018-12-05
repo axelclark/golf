@@ -7,8 +7,8 @@ defmodule GolfWeb.RoundCommander do
   end
 
   defhandler decrement(socket, sender, %{"id" => score_id}) do
-    {:ok, score} = Golf.Scorecard.decrement_score(score_id)
-    send_data(socket, sender, score)
+    {:ok, %{num_strokes: num_strokes}} = Golf.Scorecard.decrement_score(score_id)
+    send_data(socket, sender, num_strokes)
   end
 
   defp send_data(socket, sender, num_strokes) do
