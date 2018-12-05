@@ -17,10 +17,10 @@
 
 <h2>Scorecard</h2>
 
-<table>
+<table class="scorecard">
   <thead>
     <tr>
-      <th>Hole Number</th>
+      <th>Hole</th>
       <th>Par</th>
       <th>Remove</th>
       <th>Add</th>

@@ -1,3 +1,37 @@
 /* This file is for your main application css. */
 
 @import "./phoenix.css";
+
+table.scorecard {
+  font-size: 1.6rem;
+}
+
+table.scorecard th {
+  font-size: 1.2rem;
+}
+
+
+@media (min-width: 40rem) {
+  table.scorecard th {
+    font-size: 1.6rem;
+  }
+}
+
+
+table.scorecard th {
+  text-align: center;
+}
+
+table.scorecard th:first-child {
+  text-align: left;
+  padding-left: .8rem;
+}
+
+table.scorecard td {
+  text-align: center;
+}
+
+table.scorecard td:first-child {
+  text-align: left;
+  padding-left: .8rem;
+}
