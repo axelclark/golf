@@ -27,7 +27,7 @@ defmodule Golf.Factory do
 
   def score_factory do
     %Scorecard.Score{
-      num_strokes: nil,
+      num_strokes: 0,
       round: build(:round),
       hole: build(:hole)
     }

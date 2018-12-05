@@ -3,7 +3,7 @@ defmodule Golf.Scorecard.Score do
   import Ecto.Changeset
 
   schema "scores" do
-    field :num_strokes, :integer
+    field :num_strokes, :integer, default: 0
     belongs_to(:hole, Golf.Courses.Hole)
     belongs_to(:round, Golf.Scorecard.Round)
 

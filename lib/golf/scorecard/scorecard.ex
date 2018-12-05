@@ -65,6 +65,34 @@ defmodule Golf.Scorecard do
   end
 
   @doc """
+  Increments num_strokes for a score.
+  """
+  def increment_score(id) do
+    {1, [score]} =
+      Score
+      |> update(inc: [num_strokes: 1])
+      |> where(id: ^id)
+      |> select([s], s)
+      |> Repo.update_all([])
+
+    {:ok, score}
+  end
+
+  @doc """
+  Decrements num_strokes for a score.
+  """
+  def decrement_score(id) do
+    {1, [score]} =
+      Score
+      |> update(inc: [num_strokes: -1])
+      |> where(id: ^id)
+      |> select([s], s)
+      |> Repo.update_all([])
+
+    {:ok, score}
+  end
+
+  @doc """
   Updates a round.
   """
   def update_round(%Round{} = round, attrs) do

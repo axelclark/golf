@@ -1,0 +1,21 @@
+<tr drab-commander="GolfWeb.RoundCommander">
+  <td>
+    <%= @score.hole.hole_number %>
+  </td>
+  <td>
+    <%= @score.hole.par %>
+  </td>
+  <td>
+    <button drab="click:increment({id: <%= @score.id %>})">+</button>
+  </td>
+  <td>
+    <button drab="click:decrement({id: <%= @score.id %>})">-</button>
+  </td>
+  <td class="num_strokes">
+    <%= if is_integer(@score.num_strokes) && @score.num_strokes > 0 do %>
+      <%= @score.num_strokes %>
+    <% else %>
+     <%= "" %>
+    <% end %>
+  </td>
+</tr>

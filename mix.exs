@@ -38,6 +38,7 @@ defmodule Golf.MixProject do
       {:absinthe_phoenix, "~> 1.4"},
       {:dataloader, "~> 1.0.4"},
       {:distillery, "~> 2.0"},
+      {:drab, "~> 0.10.0"},
       {:ecto_sql, "~> 3.0"},
       {:ex_machina, "~> 2.2", only: :test},
       {:gettext, "~> 0.11"},
@@ -48,7 +49,7 @@ defmodule Golf.MixProject do
       {:phoenix_html, "~> 2.11"},
       {:phoenix_pubsub, "~> 1.1"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:plug_cowboy, "~> 2.0"}
+      {:plug_cowboy, "~> 2.0", override: true}
     ]
   end
 

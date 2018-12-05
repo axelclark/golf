@@ -16,16 +16,14 @@
     <tr>
       <th>Hole Number</th>
       <th>Par</th>
+      <th>Add</th>
+      <th>Remove</th>
       <th>Strokes</th>
     </tr>
   </thead>
   <tbody>
     <%= for score <- @round.scores do %>
-      <tr>
-        <td><%= score.hole.hole_number %></td>
-        <td><%= score.hole.par %></td>
-        <td><%= score.num_strokes %></td>
-      </tr>
+      <%= render "score_rows.html", Map.put(assigns, :score, score) %>
     <% end %>
   </tbody>
 </table>

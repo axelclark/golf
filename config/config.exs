@@ -17,6 +17,15 @@ config :golf, GolfWeb.Endpoint,
   render_errors: [view: GolfWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: Golf.PubSub, adapter: Phoenix.PubSub.PG2]
 
+# Configures Drab
+config :drab, GolfWeb.Endpoint, otp_app: :golf
+
+# Configures default Drab file extension
+config :phoenix, :template_engines, drab: Drab.Live.Engine
+
+# Configures Drab for webpack
+config :drab, GolfWeb.Endpoint, js_socket_constructor: "window.__socket"
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

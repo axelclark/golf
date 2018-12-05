@@ -3,6 +3,7 @@ defmodule Golf.Repo.Migrations.AddDeleteAllToScoresForRoundId do
 
   def up do
     execute "ALTER TABLE scores DROP CONSTRAINT scores_round_id_fkey"
+
     alter table(:scores) do
       modify :round_id, references(:rounds, on_delete: :delete_all)
     end
@@ -10,6 +11,7 @@ defmodule Golf.Repo.Migrations.AddDeleteAllToScoresForRoundId do
 
   def down do
     execute "ALTER TABLE scores DROP CONSTRAINT scores_round_id_fkey"
+
     alter table(:scores) do
       modify :round_id, references(:rounds, on_delete: :nothing)
     end

@@ -53,7 +53,7 @@ defmodule Golf.ScorecardTest do
       course = insert(:course)
       hole = insert(:hole, course: course)
       round = insert(:round, course: course)
-      insert(:score, hole: hole, round: round, num_strokes: nil)
+      insert(:score, hole: hole, round: round)
 
       round = %{scores: [score]} = Scorecard.get_round!(round.id)
       score_attrs = %{"0" => %{"id" => score.id, "num_strokes" => "4"}}
@@ -76,7 +76,7 @@ defmodule Golf.ScorecardTest do
       course = insert(:course)
       hole = insert(:hole, course: course)
       round = insert(:round, course: course)
-      score = insert(:score, hole: hole, round: round, num_strokes: nil)
+      score = insert(:score, hole: hole, round: round)
 
       assert {:ok, %Round{}} = Scorecard.delete_round(round)
       assert_raise Ecto.NoResultsError, fn -> Scorecard.get_round!(round.id) end
@@ -102,11 +102,35 @@ defmodule Golf.ScorecardTest do
 
       assert result.round_id == round.id
       assert result.hole_id == hole.id
-      assert result.num_strokes == nil
+      assert result.num_strokes == 0
     end
 
     test "create_round/1 with invalid data returns error changeset" do
       assert {:error, %Ecto.Changeset{}} = Scorecard.create_score(%{})
+    end
+
+    test "increment_score/1 increases score by 1" do
+      score = insert(:score, num_strokes: 1)
+
+      {:ok, %Score{} = result} = Scorecard.increment_score(score.id)
+
+      assert result.num_strokes == 2
+    end
+
+    test "increment_score/1 increases score by 1 when nil" do
+      score = insert(:score, num_strokes: 0)
+
+      {:ok, %Score{} = result} = Scorecard.increment_score(score.id)
+
+      assert result.num_strokes == 1
+    end
+
+    test "decrement_score/1 decreases score by 1" do
+      score = insert(:score, num_strokes: 3)
+
+      {:ok, %Score{} = result} = Scorecard.decrement_score(score.id)
+
+      assert result.num_strokes == 2
     end
   end
 end
