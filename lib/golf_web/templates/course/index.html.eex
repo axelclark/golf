@@ -5,25 +5,31 @@
     <tr>
       <th>Name</th>
       <th>Num holes</th>
-
+      <th></th>
+      <th></th>
       <th></th>
     </tr>
   </thead>
   <tbody>
 <%= for course <- @courses do %>
     <tr>
-      <td><%= course.name %></td>
+      <td><%= link course.name, to: Routes.course_path(@conn, :show, course) %></td>
       <td><%= course.num_holes %></td>
 
       <td>
-        <%= link "StartRound", to: Routes.round_path(@conn, :create, %{round: %{course_id: course.id}}), method: :post %>
-        <%= link "Show", to: Routes.course_path(@conn, :show, course) %>
-        <%= link "Edit", to: Routes.course_path(@conn, :edit, course) %>
-        <%= link "Delete", to: Routes.course_path(@conn, :delete, course), method: :delete, data: [confirm: "Are you sure?"] %>
+        <%= link "Start Round", to: Routes.round_path(@conn, :create, %{round: %{course_id: course.id}}), method: :post, class: "button" %>
+      </td>
+        
+      <td>
+        <%= link "Edit", to: Routes.course_path(@conn, :edit, course), class: "button button-outline" %>
+      </td>
+      <td>
+        <%= link "Delete", to: Routes.course_path(@conn, :delete, course), method: :delete, data: [confirm: "Are you sure?"], class: "button button-outline" %>
+      </td>
       </td>
     </tr>
 <% end %>
   </tbody>
 </table>
 
-<span><%= link "New Course", to: Routes.course_path(@conn, :new) %></span>
+<span><%= link "New Course", to: Routes.course_path(@conn, :new), class: "button button-outline" %></span>

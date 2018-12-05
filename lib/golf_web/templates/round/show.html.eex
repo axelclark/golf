@@ -16,8 +16,8 @@
     <tr>
       <th>Hole Number</th>
       <th>Par</th>
-      <th>Add</th>
       <th>Remove</th>
+      <th>Add</th>
       <th>Strokes</th>
     </tr>
   </thead>
@@ -28,5 +28,5 @@
   </tbody>
 </table>
 
-<span><%= link "Edit", to: Routes.round_path(@conn, :edit, @round) %></span>
-<span><%= link "Back", to: Routes.round_path(@conn, :index) %></span>
+<span><%= link "Edit", to: Routes.round_path(@conn, :edit, @round), class: "button button-outline" %></span>
+<span><%= link "Back", to: Routes.round_path(@conn, :index), class: "button button-outline" %></span>

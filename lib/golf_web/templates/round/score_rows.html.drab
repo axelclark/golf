@@ -6,10 +6,10 @@
     <%= @score.hole.par %>
   </td>
   <td>
-    <button drab="click:increment({id: <%= @score.id %>})">+</button>
+    <button drab="click:decrement({id: <%= @score.id %>})">-</button>
   </td>
   <td>
-    <button drab="click:decrement({id: <%= @score.id %>})">-</button>
+    <button drab="click:increment({id: <%= @score.id %>})">+</button>
   </td>
   <td class="num_strokes">
     <%= if is_integer(@score.num_strokes) && @score.num_strokes > 0 do %>

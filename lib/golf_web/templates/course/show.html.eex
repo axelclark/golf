@@ -14,5 +14,5 @@
 
 </ul>
 
-<span><%= link "Edit", to: Routes.course_path(@conn, :edit, @course) %></span>
-<span><%= link "Back", to: Routes.course_path(@conn, :index) %></span>
+<span><%= link "Edit", to: Routes.course_path(@conn, :edit, @course), class: "button button-outline" %></span>
+<span><%= link "Back", to: Routes.course_path(@conn, :index), class: "button button-outline"  %></span>

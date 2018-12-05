@@ -6,21 +6,23 @@
       <th>Course</th>
       <th>Started on</th>
       <th></th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
 <%= for round <- @rounds do %>
     <tr>
-      <td><%= round.course.name %></td>
+      <td><%= link round.course.name, to: Routes.round_path(@conn, :show, round) %></td>
       <td><%= round.started_on %></td>
       <td>
-        <%= link "Show", to: Routes.round_path(@conn, :show, round) %>
-        <%= link "Edit", to: Routes.round_path(@conn, :edit, round) %>
-        <%= link "Delete", to: Routes.round_path(@conn, :delete, round), method: :delete, data: [confirm: "Are you sure?"] %>
+        <%= link "Edit", to: Routes.round_path(@conn, :edit, round), class: "button button-outline" %>
+      </td>
+      <td>
+        <%= link "Delete", to: Routes.round_path(@conn, :delete, round), method: :delete, data: [confirm: "Are you sure?"], class: "button button-outline" %>
       </td>
     </tr>
 <% end %>
   </tbody>
 </table>
 
-<span><%= link "New Round", to: Routes.round_path(@conn, :new) %></span>
+<span><%= link "New Round", to: Routes.round_path(@conn, :new), class: "button button-outline" %></span>
