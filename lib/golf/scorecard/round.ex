@@ -3,7 +3,7 @@ defmodule Golf.Scorecard.Round do
   import Ecto.Changeset
 
   schema "rounds" do
-    field :started_on, :date
+    field :started_on, :date, default: Date.utc_today()
     field :total_score, :integer, virtual: true, default: 0
     belongs_to :course, Golf.Courses.Course
     has_many :scores, Golf.Scorecard.Score
@@ -17,6 +17,7 @@ defmodule Golf.Scorecard.Round do
     |> cast(attrs, [:started_on, :course_id])
     |> validate_required([:started_on, :course_id])
     |> cast_assoc(:scores)
+    |> foreign_key_constraint(:course_id)
   end
 
   def add_total_score(round) do

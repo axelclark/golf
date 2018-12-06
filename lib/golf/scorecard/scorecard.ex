@@ -35,8 +35,6 @@ defmodule Golf.Scorecard do
   Creates a round.
   """
   def create_round(attrs \\ %{}) do
-    attrs = Map.put_new(attrs, "started_on", Date.utc_today())
-
     %Round{}
     |> Round.changeset(attrs)
     |> Repo.insert()
