@@ -15,11 +15,29 @@ defmodule GolfWeb.Schema do
     end
   end
 
-  @desc "The list of golf courses"
   query do
+    @desc "The list of golf courses"
     field :courses, list_of(:course) do
       resolve(&Resolvers.Courses.list_courses/3)
     end
+
+    @desc "The list of rounds"
+    field :rounds, list_of(:round) do
+      resolve(&Resolvers.Scorecard.list_rounds/3)
+    end
+  end
+
+  scalar :date do
+    parse(fn input ->
+      case Date.from_iso8601(input.value) do
+        {:ok, date} -> {:ok, date}
+        _ -> :error
+      end
+    end)
+
+    serialize(fn date ->
+      Date.to_iso8601(date)
+    end)
   end
 
   def context(ctx) do
