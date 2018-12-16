@@ -25,6 +25,12 @@ defmodule GolfWeb.Schema do
     field :rounds, list_of(:round) do
       resolve(&Resolvers.Scorecard.list_rounds/3)
     end
+
+    @desc "Get a round"
+    field :round, :round do
+      arg(:id, non_null(:id))
+      resolve(&Resolvers.Scorecard.get_round/3)
+    end
   end
 
   scalar :date do

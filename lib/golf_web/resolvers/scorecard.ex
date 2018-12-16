@@ -14,6 +14,10 @@ defmodule GolfWeb.Resolvers.Scorecard do
     end
   end
 
+  def get_round(_parent, %{id: id}, _resolution) do
+    {:ok, Golf.Scorecard.get_round!(id)}
+  end
+
   def list_rounds(_parent, _args, _resolution) do
     {:ok, Golf.Scorecard.list_rounds()}
   end
