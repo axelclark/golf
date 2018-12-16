@@ -35,11 +35,23 @@ defmodule Golf.Scorecard do
   Creates a round.
   """
   def create_round(attrs \\ %{}) do
+    attrs = add_started_on(attrs)
+
     %Round{}
     |> Round.changeset(attrs)
     |> Repo.insert()
     |> add_scores_from_holes()
   end
+
+  defp add_started_on(%{"course_id" => _} = attrs) do
+    Map.put_new(attrs, "started_on", Date.utc_today())
+  end
+
+  defp add_started_on(%{course_id: _} = attrs) do
+    Map.put_new(attrs, :started_on, Date.utc_today())
+  end
+
+  defp add_started_on(attrs), do: attrs
 
   defp add_scores_from_holes({:error, _} = error), do: error
 

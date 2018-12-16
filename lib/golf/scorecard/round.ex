@@ -3,7 +3,7 @@ defmodule Golf.Scorecard.Round do
   import Ecto.Changeset
 
   schema "rounds" do
-    field :started_on, :date, default: Date.utc_today()
+    field :started_on, :date
     field :total_score, :integer, virtual: true, default: 0
     belongs_to :course, Golf.Courses.Course
     has_many :scores, Golf.Scorecard.Score
