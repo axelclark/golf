@@ -21,7 +21,7 @@ defmodule GolfWeb.Schema.ScorecardTypes do
     field :course_id, non_null(:integer)
   end
 
-  @desc "A hole on a golf gourse"
+  @desc "A score in a round"
   object :score do
     field :id, :id
     field :num_strokes, :integer
@@ -29,5 +29,10 @@ defmodule GolfWeb.Schema.ScorecardTypes do
     field :hole_id, :integer
     field :round, :round
     field :round_id, :integer
+  end
+
+  @desc "Inputs to update a score"
+  input_object :score_input do
+    field :num_strokes, non_null(:integer)
   end
 end

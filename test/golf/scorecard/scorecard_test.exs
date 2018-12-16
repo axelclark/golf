@@ -106,6 +106,15 @@ defmodule Golf.ScorecardTest do
   describe "scores" do
     alias Golf.Scorecard.Score
 
+    test "get_score!/1 returns the score with given id" do
+      hole = insert(:hole, par: 3, hole_number: 1)
+      score = insert(:score, num_strokes: 0, hole: hole)
+      result = Scorecard.get_score!(score.id)
+
+      assert result.id == score.id
+      assert result.hole.par == hole.par
+    end
+
     test "create_score/1 with valid data creates a score" do
       course = insert(:course)
       round = insert(:round, course: course)
@@ -145,6 +154,23 @@ defmodule Golf.ScorecardTest do
       {:ok, %Score{} = result} = Scorecard.decrement_score(score.id)
 
       assert result.num_strokes == 2
+    end
+
+    test "update_score/2 with valid data updates the score" do
+      score = insert(:score, num_strokes: 0)
+      attrs = %{"num_strokes" => "4"}
+
+      {:ok, result} = Scorecard.update_score(score, attrs)
+
+      assert result.num_strokes == 4
+      assert result.id == score.id
+    end
+
+    test "update_score/2 with invalid data returns error changeset" do
+      score = insert(:score, num_strokes: 0)
+      attrs = %{"num_strokes" => "NaN"}
+
+      assert {:error, %Ecto.Changeset{}} = Scorecard.update_score(score, attrs)
     end
   end
 end

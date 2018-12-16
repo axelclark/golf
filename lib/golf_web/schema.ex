@@ -7,11 +7,18 @@ defmodule GolfWeb.Schema do
   alias Golf.Courses
   alias GolfWeb.Resolvers
 
-  @desc "Create a round"
   mutation do
+    @desc "Create a round"
     field :create_round, :round do
       arg(:input, non_null(:round_input))
       resolve(&Resolvers.Scorecard.create_round/3)
+    end
+
+    @desc "Update a score"
+    field :update_score, :score do
+      arg(:id, non_null(:id))
+      arg(:input, non_null(:score_input))
+      resolve(&Resolvers.Scorecard.update_score/3)
     end
   end
 

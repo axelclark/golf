@@ -52,7 +52,7 @@ defmodule GolfWeb.Schema.Mutation.CreateRoundTest do
                  "locations" => [%{"column" => 0, "line" => 2}],
                  "path" => ["round"],
                  "details" => %{"course_id" => ["does not exist"]},
-                 "message" => "Couldn't create course"
+                 "message" => "Couldn't create round"
                }
              ]
            }

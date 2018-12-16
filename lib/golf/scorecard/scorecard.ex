@@ -76,6 +76,40 @@ defmodule Golf.Scorecard do
   end
 
   @doc """
+  Updates a round.
+  """
+  def update_round(%Round{} = round, attrs) do
+    round
+    |> Round.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a Round.
+  """
+  def delete_round(%Round{} = round) do
+    Repo.delete(round)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking round changes.
+  """
+  def change_round(%Round{} = round) do
+    Round.changeset(round, %{})
+  end
+
+  @doc """
+  Gets a single score.
+
+  Raises `Ecto.NoResultsError` if the Score does not exist.
+  """
+  def get_score!(id) do
+    Score
+    |> preload([:round, :hole])
+    |> Repo.get!(id)
+  end
+
+  @doc """
   Creates a score.
   """
   def create_score(attrs \\ %{}) do
@@ -113,25 +147,11 @@ defmodule Golf.Scorecard do
   end
 
   @doc """
-  Updates a round.
+  Updates a score.
   """
-  def update_round(%Round{} = round, attrs) do
-    round
-    |> Round.changeset(attrs)
+  def update_score(%Score{} = score, attrs) do
+    score
+    |> Score.changeset(attrs)
     |> Repo.update()
-  end
-
-  @doc """
-  Deletes a Round.
-  """
-  def delete_round(%Round{} = round) do
-    Repo.delete(round)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking round changes.
-  """
-  def change_round(%Round{} = round) do
-    Round.changeset(round, %{})
   end
 end
