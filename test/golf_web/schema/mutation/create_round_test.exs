@@ -5,6 +5,9 @@ defmodule GolfWeb.Schema.Mutation.CreateRoundTest do
   mutation ($round: RoundInput!) {
     round: createRound(input: $round) {
       courseId
+      course {
+        name
+      }
     }
   }
   """
@@ -23,7 +26,10 @@ defmodule GolfWeb.Schema.Mutation.CreateRoundTest do
     assert json_response(conn, 200) == %{
              "data" => %{
                "round" => %{
-                 "courseId" => round["courseId"]
+                 "courseId" => round["courseId"],
+                 "course" => %{
+                   "name" => course.name
+                 }
                }
              }
            }

@@ -40,6 +40,7 @@ defmodule Golf.Scorecard do
     %Round{}
     |> Round.changeset(attrs)
     |> Repo.insert()
+    |> preload_assocs()
     |> add_scores_from_holes()
   end
 
@@ -52,6 +53,13 @@ defmodule Golf.Scorecard do
   end
 
   defp add_started_on(attrs), do: attrs
+
+  defp preload_assocs({:error, _} = error), do: error
+
+  defp preload_assocs({:ok, round}) do
+    round = Repo.preload(round, [:course, [scores: :hole]])
+    {:ok, round}
+  end
 
   defp add_scores_from_holes({:error, _} = error), do: error
 
