@@ -153,5 +153,14 @@ defmodule Golf.Scorecard do
     score
     |> Score.changeset(attrs)
     |> Repo.update()
+    |> preload_score_assocs()
+  end
+
+  defp preload_score_assocs({:error, _} = error), do: error
+
+  defp preload_score_assocs({:ok, score}) do
+    score = Repo.preload(score, [[round: [scores: :hole]], :hole])
+    score_with_updated_round = %{score | round: Round.add_total_score(score.round)}
+    {:ok, score_with_updated_round}
   end
 end

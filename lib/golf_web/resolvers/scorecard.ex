@@ -26,6 +26,7 @@ defmodule GolfWeb.Resolvers.Scorecard do
 
   def update_score(_parent, %{id: id, input: params}, _resolution) do
     score = Scorecard.get_score!(id)
+
     case Scorecard.update_score(score, params) do
       {:error, changeset} ->
         {

@@ -16,6 +16,8 @@ defmodule GolfWeb.Schema.Query.ScorecardTest do
   @query """
   {
     rounds {
+      startedOn
+      totalScore
       course {
         name
         holes {
@@ -23,7 +25,6 @@ defmodule GolfWeb.Schema.Query.ScorecardTest do
           par
         }
       },
-      startedOn
       scores {
         numStrokes
         hole {
@@ -43,6 +44,7 @@ defmodule GolfWeb.Schema.Query.ScorecardTest do
                "rounds" => [
                  %{
                    "startedOn" => Date.to_iso8601(round.started_on),
+                   "totalScore" => 0,
                    "course" => %{
                      "name" => "course0",
                      "holes" => [

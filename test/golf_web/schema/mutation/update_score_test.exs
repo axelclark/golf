@@ -10,12 +10,16 @@ defmodule GolfWeb.Schema.Mutation.UpdateScoreTest do
         holeNumber
         par
       }
+      round {
+        totalScore
+      }
     }
   }
   """
   test "updateScore field creates a score", %{conn: conn} do
     hole = insert(:hole, par: 3, hole_number: 1)
     score = insert(:score, num_strokes: 0, hole: hole)
+
     score_attrs = %{
       "numStrokes" => 4
     }
@@ -33,6 +37,9 @@ defmodule GolfWeb.Schema.Mutation.UpdateScoreTest do
                  "hole" => %{
                    "par" => 3,
                    "holeNumber" => 1
+                 },
+                 "round" => %{
+                   "totalScore" => 1
                  }
                }
              }
@@ -41,6 +48,7 @@ defmodule GolfWeb.Schema.Mutation.UpdateScoreTest do
 
   test "updateScore field errors with a string for numStrokes", %{conn: conn} do
     score = insert(:score, num_strokes: 0)
+
     score_attrs = %{
       "numStrokes" => "NaN"
     }
@@ -51,12 +59,13 @@ defmodule GolfWeb.Schema.Mutation.UpdateScoreTest do
         variables: %{"id" => score.id, "score" => score_attrs}
 
     assert json_response(conn, 200) == %{
-              "errors" => [
-                %{
-                  "locations" => [],
-                  "message" => "Argument \"input\" has invalid value $score.\nIn field \"numStrokes\": Expected type \"Int!\", found \"NaN\"."
-                }
-              ]
-            }
+             "errors" => [
+               %{
+                 "locations" => [],
+                 "message" =>
+                   "Argument \"input\" has invalid value $score.\nIn field \"numStrokes\": Expected type \"Int!\", found \"NaN\"."
+               }
+             ]
+           }
   end
 end
