@@ -95,6 +95,7 @@ defmodule Golf.CoursesTest do
       attrs = %{hole_number: 0, course_id: course.id, par: -1}
 
       assert {:error, %Ecto.Changeset{} = result} = Courses.create_hole(attrs)
+
       assert result.errors == [
                par:
                  {"must be greater than or equal to %{number}",

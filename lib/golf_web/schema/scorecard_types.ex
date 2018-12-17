@@ -7,6 +7,7 @@ defmodule GolfWeb.Schema.ScorecardTypes do
   object :round do
     field :id, :id
     field :total_score, :integer
+    field :holes_to_play, :integer
     field :started_on, :date
     field :course, :course
     field :course_id, :integer
