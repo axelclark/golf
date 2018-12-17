@@ -172,5 +172,12 @@ defmodule Golf.ScorecardTest do
 
       assert {:error, %Ecto.Changeset{}} = Scorecard.update_score(score, attrs)
     end
+
+    test "update_score/2 returns an error if num_strokes < 0" do
+      score = insert(:score, num_strokes: 0)
+      attrs = %{"num_strokes" => -1}
+
+      assert {:error, %Ecto.Changeset{}} = Scorecard.update_score(score, attrs)
+    end
   end
 end

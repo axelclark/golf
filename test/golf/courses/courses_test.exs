@@ -91,7 +91,18 @@ defmodule Golf.CoursesTest do
     end
 
     test "create_hole/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Courses.create_hole(%{})
+      course = insert(:course)
+      attrs = %{hole_number: 0, course_id: course.id, par: -1}
+
+      assert {:error, %Ecto.Changeset{} = result} = Courses.create_hole(attrs)
+      assert result.errors == [
+               par:
+                 {"must be greater than or equal to %{number}",
+                  [validation: :number, kind: :greater_than_or_equal_to, number: 1]},
+               hole_number:
+                 {"must be greater than or equal to %{number}",
+                  [validation: :number, kind: :greater_than_or_equal_to, number: 1]}
+             ]
     end
   end
 end
