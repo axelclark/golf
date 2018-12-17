@@ -5,7 +5,7 @@ defmodule Golf.Scorecard.Round do
   schema "rounds" do
     field :started_on, :date
     field :total_score, :integer, virtual: true, default: 0
-    field :holes_to_play, :integer, virtual: true
+    field :holes_to_play, :integer, virtual: true, default: 0
     belongs_to :course, Golf.Courses.Course
     has_many :scores, Golf.Scorecard.Score
 
@@ -26,10 +26,7 @@ defmodule Golf.Scorecard.Round do
   end
 
   defp calc_total_score_and_holes_to_play(%{num_strokes: 0}, round) do
-    case Map.get(round, :holes_to_play) do
-      nil -> Map.put(round, :holes_to_play, 1)
-      _holes_to_play -> Map.update!(round, :holes_to_play, &(&1 + 1))
-    end
+    Map.update!(round, :holes_to_play, &(&1 + 1))
   end
 
   defp calc_total_score_and_holes_to_play(score, round) do

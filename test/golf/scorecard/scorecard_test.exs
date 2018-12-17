@@ -58,6 +58,18 @@ defmodule Golf.ScorecardTest do
       assert result.holes_to_play == 2
     end
 
+    test "get_round!/1 returns the round with holes to go as 0 when done" do
+      course = insert(:course)
+      hole1 = insert(:hole, course: course, par: 3)
+
+      round = insert(:round)
+      insert(:score, hole: hole1, round: round, num_strokes: 2)
+
+      result = Scorecard.get_round!(round.id)
+
+      assert result.holes_to_play == 0
+    end
+
     test "create_round/1 with valid data creates a round and scores" do
       course = insert(:course)
       _hole1 = insert(:hole, course: course)
