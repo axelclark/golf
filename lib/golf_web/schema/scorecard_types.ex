@@ -22,7 +22,6 @@ defmodule GolfWeb.Schema.ScorecardTypes do
   @desc "Inputs to create a round"
   input_object :round_input do
     field :course_id, non_null(:integer)
-    field :golfer_id, non_null(:integer)
   end
 
   @desc "A score in a round"

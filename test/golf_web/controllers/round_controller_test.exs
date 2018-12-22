@@ -38,19 +38,23 @@ defmodule GolfWeb.RoundControllerTest do
   end
 
   describe "create round" do
-    test "creates round with valid attrs and redirects to show", %{authed_conn: authed_conn} do
+    test "creates round with valid attrs and redirects to show", %{conn: conn} do
       course = insert(:course)
       golfer = insert(:user)
+      authed_conn = Pow.Plug.assign_current_user(conn, golfer, [])
 
       params = %{
-        course_id: course.id,
-        golfer_id: golfer.id
+        course_id: course.id
       }
 
       conn = post(authed_conn, Routes.round_path(authed_conn, :create), round: params)
 
       assert %{id: id} = redirected_params(conn)
       assert redirected_to(conn) == Routes.round_path(conn, :show, id)
+
+      round = Golf.Repo.get!(Scorecard.Round, id)
+      assert round.course_id == course.id
+      assert round.golfer_id == golfer.id
     end
 
     test "renders errors when data is invalid", %{authed_conn: authed_conn} do

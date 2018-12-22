@@ -3,7 +3,10 @@ defmodule GolfWeb.Resolvers.Scorecard do
 
   alias Golf.Scorecard
 
-  def create_round(_parent, %{input: params}, _resolution) do
+  def create_round(_parent, %{input: params}, %{context: %{current_user: user}}) do
+    golfer_id = Map.get(user, :id)
+    params = Map.put(params, :golfer_id, golfer_id)
+
     case Scorecard.create_round(params) do
       {:error, changeset} ->
         {
@@ -14,6 +17,13 @@ defmodule GolfWeb.Resolvers.Scorecard do
       {:ok, _} = success ->
         success
     end
+  end
+
+  def create_round(_parent, _args, _resolution) do
+    {
+      :error,
+      message: "Couldn't create round", details: "Must provide auth token to get current user"
+    }
   end
 
   def get_round(_parent, %{id: id}, _resolution) do

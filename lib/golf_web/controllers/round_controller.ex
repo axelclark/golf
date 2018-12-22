@@ -16,6 +16,9 @@ defmodule GolfWeb.RoundController do
   end
 
   def create(conn, %{"round" => round_params}) do
+    current_user = conn.assigns[:current_user]
+    round_params = Map.put(round_params, "golfer_id", current_user.id)
+
     case Scorecard.create_round(round_params) do
       {:ok, round} ->
         conn
