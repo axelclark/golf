@@ -7,6 +7,7 @@ defmodule Golf.Scorecard.Round do
     field :total_score, :integer, virtual: true, default: 0
     field :holes_to_play, :integer, virtual: true, default: 0
     belongs_to :course, Golf.Courses.Course
+    belongs_to :golfer, Golf.Accounts.User
     has_many :scores, Golf.Scorecard.Score
 
     timestamps()
@@ -15,8 +16,8 @@ defmodule Golf.Scorecard.Round do
   @doc false
   def changeset(round, attrs) do
     round
-    |> cast(attrs, [:started_on, :course_id])
-    |> validate_required([:started_on, :course_id])
+    |> cast(attrs, [:started_on, :course_id, :golfer_id])
+    |> validate_required([:started_on, :course_id, :golfer_id])
     |> cast_assoc(:scores)
     |> foreign_key_constraint(:course_id)
   end

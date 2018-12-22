@@ -1,7 +1,7 @@
 defmodule Golf.Factory do
   use ExMachina.Ecto, repo: Golf.Repo
 
-  alias Golf.{Courses, Scorecard}
+  alias Golf.{Accounts, Courses, Scorecard}
 
   def course_factory do
     %Courses.Course{
@@ -21,7 +21,8 @@ defmodule Golf.Factory do
   def round_factory do
     %Scorecard.Round{
       started_on: ~D[2018-11-30],
-      course: build(:course)
+      course: build(:course),
+      golfer: build(:user)
     }
   end
 
@@ -31,5 +32,28 @@ defmodule Golf.Factory do
       round: build(:round),
       hole: build(:hole)
     }
+  end
+
+  def user_factory do
+    %Accounts.User{
+      email: sequence(:email, &"user-#{&1}@foo.com"),
+      password_hash: "password_hash"
+    }
+  end
+
+  def insert_user(attrs \\ %{}) do
+    changes =
+      Map.merge(
+        %{
+          email: "user#{Base.encode16(:crypto.strong_rand_bytes(8))}@example.com",
+          password: "secret_password",
+          confirm_password: "secret_password"
+        },
+        attrs
+      )
+
+    %Accounts.User{}
+    |> Accounts.User.changeset(changes)
+    |> Golf.Repo.insert!()
   end
 end

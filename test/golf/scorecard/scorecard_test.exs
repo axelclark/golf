@@ -71,10 +71,15 @@ defmodule Golf.ScorecardTest do
     end
 
     test "create_round/1 with valid data creates a round and scores" do
+      golfer = insert(:user)
       course = insert(:course)
       _hole1 = insert(:hole, course: course)
       _hole2 = insert(:hole, course: course)
-      attrs = Map.put(@valid_attrs, "course_id", course.id)
+
+      attrs =
+        @valid_attrs
+        |> Map.put("course_id", course.id)
+        |> Map.put("golfer_id", golfer.id)
 
       {:ok, %Round{} = result} = Scorecard.create_round(attrs)
       round = Scorecard.get_round!(result.id)
@@ -84,8 +89,14 @@ defmodule Golf.ScorecardTest do
     end
 
     test "create_round/1 with no date creates a round" do
+      golfer = insert(:user)
       course = insert(:course)
-      attrs = Map.put(%{}, "course_id", course.id)
+
+      attrs =
+        %{}
+        |> Map.put("course_id", course.id)
+        |> Map.put("golfer_id", golfer.id)
+
       assert {:ok, %Round{} = round} = Scorecard.create_round(attrs)
       assert round.started_on == Date.utc_today()
     end
@@ -95,9 +106,10 @@ defmodule Golf.ScorecardTest do
     end
 
     test "update_round/2 with valid data updates the round" do
+      golfer = insert(:user)
       course = insert(:course)
       hole = insert(:hole, course: course)
-      round = insert(:round, course: course)
+      round = insert(:round, course: course, golfer: golfer)
       insert(:score, hole: hole, round: round)
 
       round = %{scores: [score]} = Scorecard.get_round!(round.id)

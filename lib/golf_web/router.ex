@@ -1,5 +1,6 @@
 defmodule GolfWeb.Router do
   use GolfWeb, :router
+  use Pow.Phoenix.Router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -11,10 +12,22 @@ defmodule GolfWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug GolfWeb.Context
+  end
+
+  pipeline :protected do
+    plug Pow.Plug.RequireAuthenticated,
+      error_handler: Pow.Phoenix.PlugErrorHandler
+  end
+
+  scope "/" do
+    pipe_through :browser
+
+    pow_routes()
   end
 
   scope "/", GolfWeb do
-    pipe_through :browser
+    pipe_through [:browser, :protected]
 
     resources "/courses", CourseController
     resources "/rounds", RoundController
@@ -30,7 +43,6 @@ defmodule GolfWeb.Router do
 
     forward "/graphiql", Absinthe.Plug.GraphiQL,
       schema: GolfWeb.Schema,
-      interface: :simple,
       json_codec: Jason
   end
 end

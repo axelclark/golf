@@ -11,6 +11,8 @@ defmodule GolfWeb.Schema.ScorecardTypes do
     field :started_on, :date
     field :course, :course
     field :course_id, :integer
+    field :golfer, :user
+    field :golfer_id, :integer
 
     field :scores, list_of(:score) do
       resolve(&Resolvers.Scorecard.scores_for_round/3)
@@ -20,6 +22,7 @@ defmodule GolfWeb.Schema.ScorecardTypes do
   @desc "Inputs to create a round"
   input_object :round_input do
     field :course_id, non_null(:integer)
+    field :golfer_id, non_null(:integer)
   end
 
   @desc "A score in a round"

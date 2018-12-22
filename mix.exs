@@ -49,7 +49,8 @@ defmodule Golf.MixProject do
       {:phoenix_html, "~> 2.11"},
       {:phoenix_pubsub, "~> 1.1"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:plug_cowboy, "~> 2.0", override: true}
+      {:plug_cowboy, "~> 2.0", override: true},
+      {:pow, "~> 1.0.0"}
     ]
   end
 

@@ -2,6 +2,7 @@ defmodule GolfWeb.Schema do
   use Absinthe.Schema
   import_types(__MODULE__.CoursesTypes)
   import_types(__MODULE__.ScorecardTypes)
+  import_types(__MODULE__.AccountsTypes)
   import_types(Absinthe.Phoenix.Types)
 
   alias Golf.Courses
@@ -12,6 +13,13 @@ defmodule GolfWeb.Schema do
     field :create_round, :round do
       arg(:input, non_null(:round_input))
       resolve(&Resolvers.Scorecard.create_round/3)
+    end
+
+    @desc "Log in a user"
+    field :login, :session do
+      arg(:email, non_null(:string))
+      arg(:password, non_null(:string))
+      resolve(&Resolvers.Accounts.login/3)
     end
 
     @desc "Update a score"

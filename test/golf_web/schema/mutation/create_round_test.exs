@@ -5,6 +5,7 @@ defmodule GolfWeb.Schema.Mutation.CreateRoundTest do
   mutation ($round: RoundInput!) {
     round: createRound(input: $round) {
       courseId
+      golferId
       course {
         name
       }
@@ -13,9 +14,11 @@ defmodule GolfWeb.Schema.Mutation.CreateRoundTest do
   """
   test "createRound field creates a round", %{conn: conn} do
     course = insert(:course)
+    golfer = insert(:user)
 
     round = %{
-      "courseId" => course.id
+      "courseId" => course.id,
+      "golferId" => golfer.id
     }
 
     conn =
@@ -27,6 +30,7 @@ defmodule GolfWeb.Schema.Mutation.CreateRoundTest do
              "data" => %{
                "round" => %{
                  "courseId" => round["courseId"],
+                 "golferId" => round["golferId"],
                  "course" => %{
                    "name" => course.name
                  }
@@ -37,7 +41,8 @@ defmodule GolfWeb.Schema.Mutation.CreateRoundTest do
 
   test "createRound field errors with an existing name", %{conn: conn} do
     round = %{
-      "courseId" => 0
+      "courseId" => 0,
+      "golferId" => 1
     }
 
     conn =

@@ -42,5 +42,7 @@ defmodule GolfWeb.Endpoint do
     key: "_golf_key",
     signing_salt: "BFmNG//r"
 
+  plug Pow.Plug.Session, otp_app: :golf
+
   plug GolfWeb.Router
 end
