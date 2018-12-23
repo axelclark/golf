@@ -3,14 +3,18 @@ defmodule GolfWeb.Schema.Query.ScorecardTest do
 
   require Ecto.Query
 
-  setup do
+  setup %{conn: conn} do
     ExMachina.Sequence.reset()
+
+    golfer = insert(:user)
+    authed_conn = auth_user(conn, golfer)
+
     course = insert(:course)
     holes = insert_list(3, :hole, course: course)
-    round = insert(:round, course: course)
-    scores = Enum.map(holes, &insert(:score, round: round, hole: &1))
+    round = insert(:round, course: course, golfer: golfer)
+    _scores = Enum.map(holes, &insert(:score, round: round, hole: &1))
 
-    {:ok, course: course, holes: holes, round: round, scores: scores}
+    {:ok, authed_conn: authed_conn, round: round, golfer: golfer}
   end
 
   @query """
@@ -19,6 +23,7 @@ defmodule GolfWeb.Schema.Query.ScorecardTest do
       startedOn
       totalScore
       holesToPlay
+      golferId
       course {
         name
         holes {
@@ -36,8 +41,14 @@ defmodule GolfWeb.Schema.Query.ScorecardTest do
     }
   }
   """
-  test "rounds field returns rounds", %{round: round} do
-    conn = build_conn()
+  test "rounds field returns rounds for current user", %{
+    authed_conn: conn,
+    round: round,
+    golfer: golfer
+  } do
+    other_golfer = insert(:user)
+    _other_round = insert(:round, golfer: other_golfer)
+
     conn = get conn, "/api", query: @query
 
     assert json_response(conn, 200) == %{
@@ -47,6 +58,7 @@ defmodule GolfWeb.Schema.Query.ScorecardTest do
                    "startedOn" => Date.to_iso8601(round.started_on),
                    "totalScore" => 0,
                    "holesToPlay" => 3,
+                   "golferId" => golfer.id,
                    "course" => %{
                      "name" => "course0",
                      "holes" => [

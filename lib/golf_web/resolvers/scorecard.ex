@@ -30,8 +30,12 @@ defmodule GolfWeb.Resolvers.Scorecard do
     {:ok, Scorecard.get_round!(id)}
   end
 
+  def list_rounds(_parent, _args, %{context: %{current_user: user}}) do
+    {:ok, Scorecard.list_rounds(%{golfer_id: user.id})}
+  end
+
   def list_rounds(_parent, _args, _resolution) do
-    {:ok, Scorecard.list_rounds()}
+    {:ok, []}
   end
 
   def update_score(_parent, %{id: id, input: params}, _resolution) do

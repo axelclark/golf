@@ -20,6 +20,17 @@ defmodule Golf.Scorecard do
   end
 
   @doc """
+  Returns the list of rounds for a golfer
+  """
+  def list_rounds(%{golfer_id: golfer_id}) do
+    Round
+    |> preload([:course, [scores: :hole]])
+    |> where(golfer_id: ^golfer_id)
+    |> Repo.all()
+    |> Enum.map(&Round.add_total_score_and_holes_to_play/1)
+  end
+
+  @doc """
   Gets a single round.
 
   Raises `Ecto.NoResultsError` if the Round does not exist.

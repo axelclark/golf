@@ -20,6 +20,19 @@ defmodule Golf.ScorecardTest do
       assert result.course.name == course.name
     end
 
+    test "list_rounds/1 returns all rounds for a golfer" do
+      golfer = insert(:user)
+      course = insert(:course)
+      round = insert(:round, course: course, golfer: golfer)
+
+      _other_round = insert(:round)
+
+      [result] = Scorecard.list_rounds(%{golfer_id: golfer.id})
+
+      assert result.id == round.id
+      assert result.course.name == course.name
+    end
+
     test "get_round!/1 returns the round with given id" do
       round = insert(:round)
       assert Scorecard.get_round!(round.id).id == round.id
