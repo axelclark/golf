@@ -88,9 +88,4 @@ defmodule GolfWeb.Schema.Mutation.CreateRoundTest do
              ]
            }
   end
-
-  defp auth_user(conn, user) do
-    token = GolfWeb.Authentication.sign(%{id: user.id})
-    put_req_header(conn, "authorization", "Bearer #{token}")
-  end
 end

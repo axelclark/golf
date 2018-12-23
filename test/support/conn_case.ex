@@ -23,6 +23,11 @@ defmodule GolfWeb.ConnCase do
 
       import Golf.Factory
 
+      defp auth_user(conn, user) do
+        token = GolfWeb.Authentication.sign(%{id: user.id})
+        put_req_header(conn, "authorization", "Bearer #{token}")
+      end
+
       # The default endpoint for testing
       @endpoint GolfWeb.Endpoint
     end
