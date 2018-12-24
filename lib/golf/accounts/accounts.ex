@@ -3,6 +3,10 @@ defmodule Golf.Accounts do
   The Accounts context.
   """
 
+  use Pow.Ecto.Context,
+    repo: Golf.Repo,
+    user: Golf.Accounts.User
+
   import Ecto.Query, warn: false
 
   alias Golf.Repo
@@ -18,6 +22,13 @@ defmodule Golf.Accounts do
     else
       _ -> :error
     end
+  end
+
+  @doc """
+  Creates a user, uses pow function.
+  """
+  def create_user(params) do
+    pow_create(params)
   end
 
   @doc """

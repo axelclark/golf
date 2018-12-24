@@ -9,7 +9,14 @@ defmodule GolfWeb.Schema.AccountsTypes do
 
   @desc "A user"
   object :user do
+    field :id, :id
     field :email, :string
-    field :name, :string
+    field :password_hash, :string
+  end
+
+  @desc "Inputs to create a user"
+  input_object :user_input do
+    field :email, non_null(:string)
+    field :password, non_null(:string)
   end
 end
