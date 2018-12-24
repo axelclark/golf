@@ -2,17 +2,10 @@ defmodule GolfWeb.RoundController do
   use GolfWeb, :controller
 
   alias Golf.{Courses, Scorecard}
-  alias Golf.Scorecard.Round
 
   def index(conn, _params) do
     rounds = Scorecard.list_rounds()
     render(conn, "index.html", rounds: rounds)
-  end
-
-  def new(conn, _params) do
-    changeset = Scorecard.change_round(%Round{})
-    courses = Courses.list_courses()
-    render(conn, "new.html", changeset: changeset, courses: courses)
   end
 
   def create(conn, %{"round" => round_params}) do
@@ -25,9 +18,10 @@ defmodule GolfWeb.RoundController do
         |> put_flash(:info, "Round created successfully.")
         |> redirect(to: Routes.round_path(conn, :show, round))
 
-      {:error, %Ecto.Changeset{} = changeset} ->
-        courses = Courses.list_courses()
-        render(conn, "new.html", changeset: changeset, courses: courses)
+      {:error, %Ecto.Changeset{} = _changeset} ->
+        conn
+        |> put_flash(:error, "Error when creating round.")
+        |> redirect(to: Routes.course_path(conn, :index))
     end
   end
 
