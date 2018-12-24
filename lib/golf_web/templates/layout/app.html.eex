@@ -13,8 +13,8 @@
         <nav role="navigation">
           <ul>
             <li><%= link "Home", to: Routes.course_path(@conn, :index) %></li>
-            <li><%= link "Rounds", to: Routes.round_path(@conn, :index) %></li>
             <li><%= link "Courses", to: Routes.course_path(@conn, :index) %></li>
+            <li><%= link "Rounds", to: Routes.round_path(@conn, :index) %></li>
             <li><%= link "Sign out", to: Routes.pow_session_path(@conn, :delete), method: :delete %></li>
           </ul>
         </nav>

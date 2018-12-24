@@ -30,7 +30,7 @@ defmodule GolfWeb.Router do
     pipe_through [:browser, :protected]
 
     resources "/courses", CourseController
-    resources "/rounds", RoundController
+    resources "/rounds", RoundController, except: [:new]
     get "/", CourseController, :index
   end
 

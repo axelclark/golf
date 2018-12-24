@@ -26,5 +26,3 @@
 <% end %>
   </tbody>
 </table>
-
-<span><%= link "New Round", to: Routes.round_path(@conn, :new), class: "button button-outline" %></span>

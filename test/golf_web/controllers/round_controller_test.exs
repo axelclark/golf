@@ -30,13 +30,6 @@ defmodule GolfWeb.RoundControllerTest do
     end
   end
 
-  describe "new round" do
-    test "renders form", %{authed_conn: authed_conn} do
-      conn = get(authed_conn, Routes.round_path(authed_conn, :new))
-      assert html_response(conn, 200) =~ "New Round"
-    end
-  end
-
   describe "create round" do
     test "creates round with valid attrs and redirects to show", %{conn: conn} do
       course = insert(:course)
@@ -59,7 +52,8 @@ defmodule GolfWeb.RoundControllerTest do
 
     test "renders errors when data is invalid", %{authed_conn: authed_conn} do
       conn = post(authed_conn, Routes.round_path(authed_conn, :create), round: @invalid_attrs)
-      assert html_response(conn, 200) =~ "New Round"
+      assert get_flash(conn, :error) == "Error when creating round."
+      assert redirected_to(conn) == Routes.course_path(conn, :index)
     end
   end
 
