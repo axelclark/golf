@@ -24,6 +24,36 @@ defmodule Golf.Accounts do
     end
   end
 
+  def calc_avg_strokes(%User{} = %{id: id}) do
+    courses =
+      %{golfer_id: id}
+      |> Golf.Scorecard.list_rounds()
+      |> Enum.group_by(&(&1.course_id))
+      |> Enum.map(&calc_course_avg/1)
+
+    %{courses: courses}
+  end
+
+  defp calc_course_avg({course_id, rounds}) do
+    holes =
+      rounds
+      |> Enum.reduce([], &(&1.scores ++ &2))
+      |> Enum.group_by(&(&1.hole_id))
+      |> Enum.map(&calc_hole_avg/1)
+
+    %{id: course_id, holes: holes}
+  end
+
+  defp calc_hole_avg({hole_id, scores}) do
+    count = Enum.count(scores)
+    sum =
+      scores
+      |> Enum.map(&(&1.num_strokes))
+      |> Enum.sum()
+
+    %{id: hole_id, avg_strokes: sum / count}
+  end
+
   @doc """
   Creates a user, uses pow function.
   """
