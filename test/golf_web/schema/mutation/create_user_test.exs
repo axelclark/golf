@@ -58,7 +58,7 @@ defmodule GolfWeb.Schema.Mutation.CreateUserTest do
                    "password_hash" => ["can't be blank"]
                  },
                  "locations" => [%{"column" => 0, "line" => 2}],
-                 "message" => "Couldn't create round",
+                 "message" => "Couldn't register user.",
                  "path" => ["session"]
                }
              ]

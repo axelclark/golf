@@ -9,7 +9,7 @@ defmodule GolfWeb.Resolvers.Accounts do
       {:error, changeset} ->
         {
           :error,
-          message: "Couldn't create round", details: error_details(changeset)
+          message: "Couldn't register user.", details: error_details(changeset)
         }
 
       {:ok, user} ->
