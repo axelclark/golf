@@ -1,5 +1,9 @@
 # Golf
 
+A GraphQL API for the (ForeScore app)[https://github.com/axelclark/golf-mobile].
+
+## Starting Your App
+
 To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
