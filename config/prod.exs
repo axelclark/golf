@@ -21,7 +21,7 @@ config :golf, Golf.Repo,
   url: "${DATABASE_URL}",
   database: "",
   ssl: true,
-  pool_size: 4
+  pool_size: 2
 
 # Do not print debug messages in production
 config :logger, level: :info
