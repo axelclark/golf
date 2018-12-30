@@ -15,6 +15,12 @@ defmodule GolfWeb.Schema do
       resolve(&Resolvers.Scorecard.create_round/3)
     end
 
+    @desc "Delete a round"
+    field :delete_round, :round do
+      arg(:id, non_null(:id))
+      resolve(&Resolvers.Scorecard.delete_round/3)
+    end
+
     @desc "Register a user"
     field :create_user, :session do
       arg(:input, non_null(:user_input))

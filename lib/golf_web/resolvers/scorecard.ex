@@ -26,6 +26,12 @@ defmodule GolfWeb.Resolvers.Scorecard do
     }
   end
 
+  def delete_round(_parent, %{id: id}, _) do
+    id
+    |> Scorecard.get_round!()
+    |> Scorecard.delete_round()
+  end
+
   def get_round(_parent, %{id: id}, _resolution) do
     {:ok, Scorecard.get_round!(id)}
   end
