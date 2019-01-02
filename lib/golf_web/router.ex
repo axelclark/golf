@@ -1,6 +1,7 @@
 defmodule GolfWeb.Router do
   use GolfWeb, :router
   use Pow.Phoenix.Router
+  use Pow.Extension.Phoenix.Router, otp_app: :golf
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -24,6 +25,7 @@ defmodule GolfWeb.Router do
     pipe_through :browser
 
     pow_routes()
+    pow_extension_routes()
   end
 
   scope "/", GolfWeb do
@@ -44,5 +46,13 @@ defmodule GolfWeb.Router do
     forward "/graphiql", Absinthe.Plug.GraphiQL,
       schema: GolfWeb.Schema,
       json_codec: Jason
+  end
+
+  if Mix.env() == :dev do
+    scope "/dev" do
+      pipe_through [:browser]
+
+      forward "/mailbox", Plug.Swoosh.MailboxPreview, base_path: "/dev/mailbox"
+    end
   end
 end

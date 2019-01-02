@@ -36,7 +36,15 @@ config :phoenix, :json_library, Jason
 
 config :golf, :pow,
   user: Golf.Accounts.User,
-  repo: Golf.Repo
+  repo: Golf.Repo,
+  extensions: [PowResetPassword, PowPersistentSession],
+  controller_callbacks: Pow.Extension.Phoenix.ControllerCallbacks,
+  mailer_backend: GolfWeb.PowMailer,
+  web_module: GolfWeb
+
+config :golf, GolfWeb.PowMailer,
+  adapter: Swoosh.Adapters.Sendgrid,
+  api_key: "${SENDGRID_API_KEY}"
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

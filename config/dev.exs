@@ -73,3 +73,5 @@ config :golf, Golf.Repo,
   database: "golf_dev",
   hostname: "localhost",
   pool_size: 10
+
+config :golf, GolfWeb.PowMailer, adapter: Swoosh.Adapters.Local

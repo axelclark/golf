@@ -44,5 +44,7 @@ defmodule GolfWeb.Endpoint do
 
   plug Pow.Plug.Session, otp_app: :golf
 
+  plug PowPersistentSession.Plug.Cookie
+
   plug GolfWeb.Router
 end
