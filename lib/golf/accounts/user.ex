@@ -1,6 +1,8 @@
 defmodule Golf.Accounts.User do
   use Ecto.Schema
-  use Pow.Ecto.Schema
+
+  use Pow.Ecto.Schema,
+    password_min_length: 6
 
   use Pow.Extension.Ecto.Schema,
     extensions: [PowResetPassword, PowPersistentSession]

@@ -41,7 +41,7 @@ defmodule GolfWeb.Schema.Mutation.CreateUserTest do
   test "createUser errors when password is too short", %{conn: conn} do
     user_params = %{
       "email" => "user@example.com",
-      "password" => "TooShort"
+      "password" => "Short"
     }
 
     conn =
