@@ -1,5 +1,7 @@
 defmodule GolfWeb.Resolvers.Accounts do
   alias Golf.Accounts
+  alias GolfWeb.Router.Helpers, as: Routes
+  alias PowResetPassword.Phoenix.Mailer
 
   def create_user(_parent, %{input: params}, _resolution) do
     password = Map.get(params, :password)
@@ -22,6 +24,16 @@ defmodule GolfWeb.Resolvers.Accounts do
     end
   end
 
+  def create_reset_token(_parent, %{email: email_address}, _) do
+    config = Application.get_env(:golf, :pow, [])
+    conn = Pow.Plug.put_config(%Plug.Conn{}, config)
+    params = %{"email" => email_address}
+
+    conn
+    |> PowResetPassword.Plug.create_reset_token(params)
+    |> respond_create(email_address)
+  end
+
   def login(_, %{email: email, password: password}, _) do
     case Accounts.authenticate(email, password) do
       {:ok, user} ->
@@ -37,8 +49,30 @@ defmodule GolfWeb.Resolvers.Accounts do
     end
   end
 
+  ## Helpers
+
   defp error_details(changeset) do
     changeset
     |> Ecto.Changeset.traverse_errors(fn {msg, _} -> msg end)
+  end
+
+  ## create_reset_token
+
+  defp respond_create({:ok, %{token: token, user: user}, conn}, email_address) do
+    url =
+      Routes.pow_reset_password_reset_password_url(
+        GolfWeb.Endpoint,
+        :edit,
+        token
+      )
+
+    email = Mailer.reset_password(conn, user, url)
+    Pow.Phoenix.Mailer.deliver(conn, email)
+
+    {:ok, %{email: email_address}}
+  end
+
+  defp respond_create({:error, _, _}, email_address) do
+    {:ok, %{email: email_address}}
   end
 end

@@ -40,6 +40,12 @@ defmodule GolfWeb.Schema do
       arg(:input, non_null(:score_input))
       resolve(&Resolvers.Scorecard.update_score/3)
     end
+
+    @desc "Resets a password"
+    field :reset_password, :user_email do
+      arg(:email, non_null(:string))
+      resolve(&Resolvers.Accounts.create_reset_token/3)
+    end
   end
 
   query do

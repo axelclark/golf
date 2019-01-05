@@ -16,3 +16,5 @@ config :golf, Golf.Repo,
   database: "golf_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
+
+config :golf, GolfWeb.PowMailer, adapter: Swoosh.Adapters.Test

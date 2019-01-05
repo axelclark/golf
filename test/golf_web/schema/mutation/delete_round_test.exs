@@ -27,7 +27,8 @@ defmodule GolfWeb.Schema.Mutation.DeleteRoundTest do
                  "id" => Integer.to_string(round.id)
                }
              }
-    }
+           }
+
     assert_raise Ecto.NoResultsError, fn -> Scorecard.get_round!(round.id) end
   end
 end
