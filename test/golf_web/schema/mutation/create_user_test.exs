@@ -54,7 +54,7 @@ defmodule GolfWeb.Schema.Mutation.CreateUserTest do
              "errors" => [
                %{
                  "details" => %{
-                   "password" => ["should be at least %{count} character(s)"],
+                   "password" => ["should be at least 6 character(s)"],
                    "password_hash" => ["can't be blank"]
                  },
                  "locations" => [%{"column" => 0, "line" => 2}],

@@ -52,8 +52,13 @@ defmodule GolfWeb.Resolvers.Accounts do
   ## Helpers
 
   defp error_details(changeset) do
-    changeset
-    |> Ecto.Changeset.traverse_errors(fn {msg, _} -> msg end)
+    Ecto.Changeset.traverse_errors(changeset, &replace_keys_in_message/1)
+  end
+
+  defp replace_keys_in_message({msg, opts}) do
+    Enum.reduce(opts, msg, fn {key, value}, acc ->
+      String.replace(acc, "%{#{key}}", to_string(value))
+    end)
   end
 
   ## create_reset_token
