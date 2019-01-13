@@ -16,7 +16,7 @@ defmodule GolfWeb.Schema.Mutation.UpdateScoreTest do
     }
   }
   """
-  test "updateScore field creates a score", %{conn: conn} do
+  test "updateScore field updates a score", %{conn: conn} do
     hole = insert(:hole, par: 3, hole_number: 1)
     score = insert(:score, num_strokes: 0, hole: hole)
 
