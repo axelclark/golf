@@ -9,6 +9,12 @@ defmodule GolfWeb.Schema do
   alias GolfWeb.Resolvers
 
   mutation do
+    @desc "Create a course"
+    field :create_course, :course do
+      arg(:input, non_null(:course_input))
+      resolve(&Resolvers.Courses.create_course/3)
+    end
+
     @desc "Create a round"
     field :create_round, :round do
       arg(:input, non_null(:round_input))

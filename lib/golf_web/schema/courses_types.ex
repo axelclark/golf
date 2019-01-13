@@ -22,4 +22,10 @@ defmodule GolfWeb.Schema.CoursesTypes do
     field :course_id, :integer
     field :course, :course
   end
+
+  @desc "Inputs to create a course"
+  input_object :course_input do
+    field :name, :string
+    field :num_holes, :integer
+  end
 end
