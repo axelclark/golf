@@ -40,6 +40,13 @@ defmodule GolfWeb.Schema do
       resolve(&Resolvers.Accounts.login/3)
     end
 
+    @desc "Update a course"
+    field :update_course, :course do
+      arg(:id, non_null(:id))
+      arg(:input, non_null(:course_input))
+      resolve(&Resolvers.Courses.update_course/3)
+    end
+
     @desc "Update a score"
     field :update_score, :score do
       arg(:id, non_null(:id))

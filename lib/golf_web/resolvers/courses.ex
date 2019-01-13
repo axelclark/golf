@@ -30,12 +30,37 @@ defmodule GolfWeb.Resolvers.Courses do
     {:ok, Golf.Repo.all(query)}
   end
 
+  def update_course(_parent, %{id: id, input: params}, %{context: %{current_user: _user}}) do
+    course = Courses.get_course!(id)
+
+    case Courses.update_course(course, params) do
+      {:error, changeset} ->
+        {
+          :error,
+          message: "Couldn't update course", details: error_details(changeset)
+        }
+
+      {:ok, _} = success ->
+        success
+    end
+  end
+
+  def update_course(_parent, _args, _resolution) do
+    {
+      :error,
+      message: "Couldn't update course", details: "Must provide auth token to get current user"
+    }
+  end
+
   ## Helpers
 
-  ## create_course
-
   defp error_details(changeset) do
-    changeset
-    |> Ecto.Changeset.traverse_errors(fn {msg, _} -> msg end)
+    Ecto.Changeset.traverse_errors(changeset, &replace_keys_in_message/1)
+  end
+
+  defp replace_keys_in_message({msg, opts}) do
+    Enum.reduce(opts, msg, fn {key, value}, acc ->
+      String.replace(acc, "%{#{key}}", to_string(value))
+    end)
   end
 end
