@@ -1,7 +1,10 @@
 defmodule GolfWeb.Resolvers.Accounts do
+  import GolfWeb.Resolvers.ErrorHelpers
   alias Golf.Accounts
   alias GolfWeb.Router.Helpers, as: Routes
   alias PowResetPassword.Phoenix.Mailer
+
+  @create_error "Couldn't register user."
 
   def create_user(_parent, %{input: params}, _resolution) do
     password = Map.get(params, :password)
@@ -9,10 +12,7 @@ defmodule GolfWeb.Resolvers.Accounts do
 
     case Accounts.create_user(params) do
       {:error, changeset} ->
-        {
-          :error,
-          message: "Couldn't register user.", details: error_details(changeset)
-        }
+        error_response(@create_error, changeset)
 
       {:ok, user} ->
         token =
@@ -50,16 +50,6 @@ defmodule GolfWeb.Resolvers.Accounts do
   end
 
   ## Helpers
-
-  defp error_details(changeset) do
-    Ecto.Changeset.traverse_errors(changeset, &replace_keys_in_message/1)
-  end
-
-  defp replace_keys_in_message({msg, opts}) do
-    Enum.reduce(opts, msg, fn {key, value}, acc ->
-      String.replace(acc, "%{#{key}}", to_string(value))
-    end)
-  end
 
   ## create_reset_token
 

@@ -1,13 +1,15 @@
 defmodule GolfWeb.Resolvers.Courses do
+  import GolfWeb.Resolvers.ErrorHelpers
   alias Golf.Courses
+
+  @create_error "Couldn't create course"
+  @update_error "Couldn't update course"
+  @auth_error "Must provide auth token to get current user"
 
   def create_course(_parent, %{input: params}, %{context: %{current_user: _user}}) do
     case Courses.create_course(params) do
       {:error, changeset} ->
-        {
-          :error,
-          message: "Couldn't create course", details: error_details(changeset)
-        }
+        error_response(@create_error, changeset)
 
       {:ok, _} = success ->
         success
@@ -15,10 +17,7 @@ defmodule GolfWeb.Resolvers.Courses do
   end
 
   def create_course(_parent, _args, _resolution) do
-    {
-      :error,
-      message: "Couldn't create course", details: "Must provide auth token to get current user"
-    }
+    error_response(@create_error, @auth_error)
   end
 
   def list_courses(_parent, _args, _resolution) do
@@ -35,10 +34,7 @@ defmodule GolfWeb.Resolvers.Courses do
 
     case Courses.update_course(course, params) do
       {:error, changeset} ->
-        {
-          :error,
-          message: "Couldn't update course", details: error_details(changeset)
-        }
+        error_response(@update_error, changeset)
 
       {:ok, _} = success ->
         success
@@ -46,21 +42,6 @@ defmodule GolfWeb.Resolvers.Courses do
   end
 
   def update_course(_parent, _args, _resolution) do
-    {
-      :error,
-      message: "Couldn't update course", details: "Must provide auth token to get current user"
-    }
-  end
-
-  ## Helpers
-
-  defp error_details(changeset) do
-    Ecto.Changeset.traverse_errors(changeset, &replace_keys_in_message/1)
-  end
-
-  defp replace_keys_in_message({msg, opts}) do
-    Enum.reduce(opts, msg, fn {key, value}, acc ->
-      String.replace(acc, "%{#{key}}", to_string(value))
-    end)
+    error_response(@update_error, @auth_error)
   end
 end

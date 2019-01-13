@@ -1,7 +1,12 @@
 defmodule GolfWeb.Resolvers.Scorecard do
   import Ecto.Query, warn: false
+  import GolfWeb.Resolvers.ErrorHelpers
 
   alias Golf.Scorecard
+
+  @create_round_error "Couldn't create round"
+  @update_score_error "Couldn't update course"
+  @auth_error "Must provide auth token to get current user"
 
   def create_round(_parent, %{input: params}, %{context: %{current_user: user}}) do
     golfer_id = Map.get(user, :id)
@@ -9,10 +14,7 @@ defmodule GolfWeb.Resolvers.Scorecard do
 
     case Scorecard.create_round(params) do
       {:error, changeset} ->
-        {
-          :error,
-          message: "Couldn't create round", details: error_details(changeset)
-        }
+        error_response(@create_round_error, changeset)
 
       {:ok, _} = success ->
         success
@@ -20,10 +22,7 @@ defmodule GolfWeb.Resolvers.Scorecard do
   end
 
   def create_round(_parent, _args, _resolution) do
-    {
-      :error,
-      message: "Couldn't create round", details: "Must provide auth token to get current user"
-    }
+    error_response(@create_round_error, @auth_error)
   end
 
   def delete_round(_parent, %{id: id}, _) do
@@ -49,10 +48,7 @@ defmodule GolfWeb.Resolvers.Scorecard do
 
     case Scorecard.update_score(score, params) do
       {:error, changeset} ->
-        {
-          :error,
-          message: "Couldn't create score", details: error_details(changeset)
-        }
+        error_response(@update_score_error, changeset)
 
       {:ok, _} = success ->
         success
@@ -67,10 +63,5 @@ defmodule GolfWeb.Resolvers.Scorecard do
       |> Golf.Repo.all()
 
     {:ok, scores}
-  end
-
-  defp error_details(changeset) do
-    changeset
-    |> Ecto.Changeset.traverse_errors(fn {msg, _} -> msg end)
   end
 end
