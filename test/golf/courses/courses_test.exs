@@ -11,13 +11,15 @@ defmodule Golf.CoursesTest do
     @invalid_course_attrs %{"name" => nil, "num_holes" => nil}
 
     test "list_courses/0 returns all courses" do
-      course = insert(:course)
-      hole = insert(:hole, course: course)
+      course_b = insert(:course, name: "B")
+      course_a = insert(:course, name: "A")
+      hole = insert(:hole, course: course_a)
 
-      [result] = Courses.list_courses()
-      %{holes: [hole_result]} = result
+      [result_a, result_b] = Courses.list_courses()
+      %{holes: [hole_result]} = result_a
 
-      assert result.id == course.id
+      assert result_a.id == course_a.id
+      assert result_b.id == course_b.id
       assert hole_result.id == hole.id
     end
 

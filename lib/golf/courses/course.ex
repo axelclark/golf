@@ -1,6 +1,7 @@
 defmodule Golf.Courses.Course do
   use Ecto.Schema
   import Ecto.Changeset
+  import Ecto.Query, warn: false
 
   schema "courses" do
     field :name, :string
@@ -8,6 +9,13 @@ defmodule Golf.Courses.Course do
     has_many :holes, Golf.Courses.Hole
 
     timestamps()
+  end
+
+  def sort_alphabetically(query) do
+    from(
+      c in query,
+      order_by: c.name
+    )
   end
 
   @doc false

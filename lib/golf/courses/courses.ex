@@ -13,6 +13,7 @@ defmodule Golf.Courses do
   """
   def list_courses do
     Course
+    |> Course.sort_alphabetically()
     |> preload(:holes)
     |> Repo.all()
   end
