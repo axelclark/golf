@@ -4,6 +4,7 @@
   <thead>
     <tr>
       <th>Course</th>
+      <th>Golfer</th>
       <th>Date</th>
       <th>Score</th>
       <th></th>
@@ -14,6 +15,7 @@
 <%= for round <- @rounds do %>
     <tr>
       <td><%= link round.course.name, to: Routes.round_path(@conn, :show, round) %></td>
+      <td><%= round.golfer.email %></td>
       <td><%= round.started_on %></td>
       <td><%= display_score(round.total_score) %></td>
       <td>

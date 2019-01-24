@@ -14,7 +14,7 @@ defmodule Golf.Scorecard do
   """
   def list_rounds do
     Round
-    |> preload([:course, [scores: :hole]])
+    |> Round.preload_assocs()
     |> Repo.all()
     |> Enum.map(&Round.add_total_score_and_holes_to_play/1)
   end
@@ -24,7 +24,7 @@ defmodule Golf.Scorecard do
   """
   def list_rounds(%{golfer_id: golfer_id}) do
     Round
-    |> preload([:course, [scores: :hole]])
+    |> Round.preload_assocs()
     |> where(golfer_id: ^golfer_id)
     |> Repo.all()
     |> Enum.map(&Round.add_total_score_and_holes_to_play/1)
@@ -37,7 +37,7 @@ defmodule Golf.Scorecard do
   """
   def get_round!(id) do
     Round
-    |> preload([:course, [scores: :hole]])
+    |> Round.preload_assocs()
     |> Repo.get!(id)
     |> Round.add_total_score_and_holes_to_play()
   end

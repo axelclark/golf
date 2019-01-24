@@ -1,6 +1,7 @@
 defmodule Golf.Scorecard.Round do
   use Ecto.Schema
   import Ecto.Changeset
+  import Ecto.Query, warn: false
 
   schema "rounds" do
     field :started_on, :date
@@ -25,6 +26,14 @@ defmodule Golf.Scorecard.Round do
   def add_total_score_and_holes_to_play(round) do
     Enum.reduce(round.scores, round, &calc_total_score_and_holes_to_play/2)
   end
+
+  def preload_assocs(query) do
+    from(r in query, preload: [:course, :golfer, [scores: :hole]])
+  end
+
+  ## Helpers
+
+  ## add_total_score_and_holes_to_play
 
   defp calc_total_score_and_holes_to_play(%{num_strokes: 0}, round) do
     Map.update!(round, :holes_to_play, &(&1 + 1))
